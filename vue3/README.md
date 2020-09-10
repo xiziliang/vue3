@@ -1,6 +1,6 @@
 # vue3
 
-## hellow world
+## hellow world 这是个vue3的脚手架
 ```
 npm install
 ```
