@@ -1,27 +1,48 @@
 <template>
-<div ref="root">{{abc}}</div>
+  <div>
+    <div>{{ name }}</div>
+    <div>{{ name2 }}</div>
+    <button @click="change">点击</button>
+  </div>
 </template>
 
 <script>
-import {
-  ref,
-  onMounted
-} from 'vue'
+import { ref, onMounted, reactive, toRefs, watch } from "vue";
 export default {
   setup(props, context) {
-    const root = ref();
-    console.log(context)
-    onMounted(() => {
-      console.log(root);
-    })
+    let name = ref("小明");
+    let state = reactive({
+      name2: "徐建",
+    });
+    watch(name, (newValue, oldValue) => {
+      console.log(newValue, oldValue);
+      console.log("变化了");
+    });
+    watch(
+      state,
+      (newValue, oldValue) => {
+        console.log(newValue, oldValue);
+      },
+      {
+        immediate: true,
+      }
+    );
+    const change = () => {
+      if (name.value === "小明") {
+        name.value = "小红";
+      } else {
+        name.value = "小明";
+      }
+    };
+
     return {
-      root,
-      abc: ref('今晚打老虎')
-    }
-  }
-}
+      ...toRefs(state),
+      change,
+      name,
+    };
+  },
+};
 </script>
 
 <style scoped>
-
 </style>
