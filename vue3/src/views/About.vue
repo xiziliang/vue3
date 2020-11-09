@@ -1,9 +1,9 @@
 <template>
-<div>
-  <div>{{ name }}</div>
-  <div>{{ name2 }}</div>
-  <button @click="change">点击</button>
-</div>
+  <div>
+    <div>{{ name }}</div>
+    <div>{{ name2 }}</div>
+    <button @click="change">点击</button>
+  </div>
 </template>
 
 <script>
@@ -15,11 +15,11 @@ import {
   watch,
   getCurrentInstance,
   isProxy,
-  isRef
+  isRef,
 } from "vue";
 export default {
   setup(props, context) {
-    const instance = getCurrentInstance() // === this
+    const instance = getCurrentInstance(); // === this
     const name = ref("小明");
     const state = reactive({
       name2: 123,
@@ -29,14 +29,16 @@ export default {
       console.log(newValue, oldValue);
       console.log("变化了");
     });
-    console.log('isProxy', isProxy(state))
+    console.log("isProxy", isProxy(state));
     // watch监听 proxy对象要用函数  箭头函数不用加{}
-    watch(() => {
-        return state.name2
+    watch(
+      () => {
+        return state.name2;
       },
       (newValue, oldValue) => {
         console.log(newValue, oldValue);
-      }, {
+      },
+      {
         immediate: true,
       }
     );
@@ -48,7 +50,7 @@ export default {
         name.value = "小明";
       }
     };
-    console.log(context)
+    console.log(context);
 
     return {
       ...toRefs(state),
@@ -59,5 +61,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
