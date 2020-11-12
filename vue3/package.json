@@ -6,7 +6,7 @@
     "start": "vue-cli-service serve",
     "test": "vue-cli-service build --mode test",
     "pre": "vue-cli-service build  --mode pre",
-    "build": "vue-cli-service build  --mode prod",
+    "build": "vue-cli-service build  --mode production",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
