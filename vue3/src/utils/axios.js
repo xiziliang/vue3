@@ -1,30 +1,38 @@
-import axios from 'axios';
-const axios = axios.create({
-    baseURL: process.env.VUE_APP_BASE_URL,
-    timeout: 5000,
-    
-})
-axios.interceptors.request.use((config)=>{
-    return config
-})
+import axios from "axios";
+const axiosInit = axios.create({
+  baseURL: process.env.VUE_APP_BASE_URL,
+  timeout: 5000,
+});
+axiosInit.interceptors.request.use((config) => {
+  return config;
+});
 
-axios.interceptors.response.use((res)=>{
-    return res.data
-},err=>{
-    return Promise.reject(err)
-})
+axiosInit.interceptors.response.use(
+  (res) => {
+    return res.data.data;
+  },
+  (err) => {
+    return Promise.reject(err);
+  }
+);
 
-export default {
-    post(opts){
-        return axios({
-            methods: 'post',
-            ...opts
-        })
-    },
-    get(opts){
-        return axios({
-            methods: 'get',
-            ...opts
-        })
-    }
-}
+export const post = (opts) => {
+  return axiosInit({
+    methods: "post",
+    ...opts,
+  });
+};
+
+export const get = (opts) => {
+  return axiosInit({
+    methods: "get",
+    ...opts,
+  });
+};
+
+export const del = (opts) => {
+  return axiosInit({
+    methods: "delete",
+    ...opts,
+  });
+};
