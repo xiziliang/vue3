@@ -1,10 +1,10 @@
 <template>
-<div class="home">
+  <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <!-- <HelloWorld />
-    <Plan></Plan> -->
-    <Canvas></Canvas>
-</div>
+    <HelloWorld />
+    <Plan></Plan>
+    <!-- <Canvas></Canvas> -->
+  </div>
 </template>
 
 <script>
@@ -13,11 +13,11 @@ import HelloWorld from "@/components/HelloWorld.vue";
 import Plan from "../components/Plan";
 import Canvas from "../components/Canvas";
 export default {
-    name: "Home",
-    components: {
-        HelloWorld,
-        Plan,
-        Canvas,
-    },
+  name: "Home",
+  components: {
+    HelloWorld,
+    Plan,
+    Canvas,
+  },
 };
 </script>
