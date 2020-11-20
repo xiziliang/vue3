@@ -13,6 +13,7 @@ import {
     reactive
 } from "vue";
 import Canvas from "../assets/js/pieCanvas";
+import  pieCanvsaProgress from "../assets/js/pieCanvasProgress";
 export default {
     setup(prop) {
         let pie = reactive({});
