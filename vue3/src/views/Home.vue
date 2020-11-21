@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld />
-    <Plan></Plan>
-    <!-- <Canvas></Canvas> -->
+    <!-- <HelloWorld />
+    <Plan></Plan> -->
+    <Canvas></Canvas>
   </div>
 </template>
 

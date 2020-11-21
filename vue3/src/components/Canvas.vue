@@ -1,18 +1,28 @@
 <template>
   <div>
-    <canvas id="canvas" width="900" height="800"></canvas>
-
     <div>{{ a }}</div>
+    <canvas id="canvas" width="900" height="800"></canvas>
+    <canvas id="canvas2"></canvas>
+    <div class="nameBox">
+      <canvas id="canvasName"></canvas>
+      <div>
+        <button id="save">保存</button>
+        <button id="clear">清除</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { onMounted, ref, reactive } from "vue";
 import Canvas from "../assets/js/pieCanvas";
-import  pieCanvsaProgress from "../assets/js/pieCanvasProgress";
+import pieCanvsaProgress from "../assets/js/pieCanvasProgress";
+import nameCanvas from "../assets/js/nameCanvas";
 export default {
   setup(prop) {
-    let pie = reactive({});
+    let pie; // 饼图
+    let pie2; // 动态饼图
+    let canvasName; // 签名
     let a = ref("你好 canvas");
     let data = [
       {
@@ -33,14 +43,21 @@ export default {
       },
     ];
     onMounted(() => {
-      a.value = "莎莎侬";
+      // a.value = "莎莎侬";
       pie = new Canvas(data, "canvas", "skyblue");
+      pie2 = new pieCanvsaProgress("canvas2", 400, 10, 100); // id 宽度 最外边圆半径 百分比
+      canvasName = new nameCanvas({
+        id: "canvasName",
+        w: 1000,
+        h: 500,
+        btnSaveId: "save",
+        btnClearId: "clear",
+      });
     });
 
     return {
       data,
       a,
-      pie,
     };
   },
 };
@@ -49,5 +66,13 @@ export default {
 <style scoped>
 canvas {
   background-color: #eee;
+}
+.nameBox {
+  width: 100%;
+  height: 550px;
+}
+#canvasName {
+  border: 1px solid;
+  background-color: #fff;
 }
 </style>

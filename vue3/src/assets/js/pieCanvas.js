@@ -53,7 +53,7 @@ export default class pieCanvas {
   drawPie(x, y) {
     let start = 0;
     // 根据数据画饼
-    console.log(this.data);
+    // console.log(this.data);
     this.data.forEach((item, i) => {
       // 结束弧度 就是起始 + 自己的弧度
       let end = start + item.angle;
