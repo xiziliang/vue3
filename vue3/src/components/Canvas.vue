@@ -10,6 +10,9 @@
         <button id="clear">清除</button>
       </div>
     </div>
+    <div>
+      <canvas id="water" width="2000" height="300"></canvas>
+    </div>
   </div>
 </template>
 
@@ -18,11 +21,13 @@ import { onMounted, ref, reactive } from "vue";
 import Canvas from "../assets/js/pieCanvas";
 import pieCanvsaProgress from "../assets/js/pieCanvasProgress";
 import nameCanvas from "../assets/js/nameCanvas";
+import * as fn from "../assets/js/canvasBeisizer";
 export default {
   setup(prop) {
     let pie; // 饼图
     let pie2; // 动态饼图
     let canvasName; // 签名
+    let beisizer = fn.wavesurRecord; // 水波纹
     let a = ref("你好 canvas");
     let data = [
       {
@@ -53,6 +58,7 @@ export default {
         btnSaveId: "save",
         btnClearId: "clear",
       });
+      beisizer("water");
     });
 
     return {
