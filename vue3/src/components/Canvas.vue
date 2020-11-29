@@ -74,6 +74,7 @@ export default {
     onUnmounted(() => {
       console.log("销毁");
       window.removeEventListener("resize", resize);
+      canAnimation.destroyed();
     });
     const resize = () => {
       canAnimation.destroyed();
