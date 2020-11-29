@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div>{{ a }}</div>
-    <canvas id="canvas" width="900" height="800"></canvas>
+    <!-- <div>{{ a }}</div> -->
+    <!-- <canvas id="canvas" width="900" height="800"></canvas>
     <canvas id="canvas2"></canvas>
     <div class="nameBox">
       <canvas id="canvasName"></canvas>
@@ -12,15 +12,19 @@
     </div>
     <div>
       <canvas id="water" width="2000" height="300"></canvas>
+    </div> -->
+    <div>
+      <canvas id="animation"></canvas>
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref, reactive, onUnmounted } from "vue";
 import Canvas from "../assets/js/pieCanvas";
 import pieCanvsaProgress from "../assets/js/pieCanvasProgress";
 import nameCanvas from "../assets/js/nameCanvas";
+import canvasAnimation from "../assets/js/canvasAnimation";
 import * as fn from "../assets/js/canvasBeisizer";
 export default {
   setup(prop) {
@@ -28,6 +32,7 @@ export default {
     let pie2; // 动态饼图
     let canvasName; // 签名
     let beisizer = fn.wavesurRecord; // 水波纹
+    let canAnimation = reactive({}); // 网格动画
     let a = ref("你好 canvas");
     let data = [
       {
@@ -49,21 +54,40 @@ export default {
     ];
     onMounted(() => {
       // a.value = "莎莎侬";
-      pie = new Canvas(data, "canvas", "skyblue");
-      pie2 = new pieCanvsaProgress("canvas2", 400, 10, 100); // id 宽度 最外边圆半径 百分比
-      canvasName = new nameCanvas({
-        id: "canvasName",
-        w: 1000,
-        h: 500,
-        btnSaveId: "save",
-        btnClearId: "clear",
+      // pie = new Canvas(data, "canvas", "skyblue");
+      // pie2 = new pieCanvsaProgress("canvas2", 400, 10, 100); // id 宽度 最外边圆半径 百分比
+      // canvasName = new nameCanvas({
+      //   id: "canvasName",
+      //   w: 1000,
+      //   h: 500,
+      //   btnSaveId: "save",
+      //   btnClearId: "clear",
+      // });
+      // beisizer("water");
+      canAnimation = new canvasAnimation({
+        id: "animation",
+        type: "2d",
+        config: { count: 150 },
       });
-      beisizer("water");
+      window.addEventListener("resize", resize);
     });
-
+    onUnmounted(() => {
+      console.log("销毁");
+      window.removeEventListener("resize", resize);
+    });
+    const resize = () => {
+      canAnimation.destroyed();
+      canAnimation = new canvasAnimation({
+        id: "animation",
+        type: "2d",
+        config: { count: 150 },
+      });
+    };
     return {
       data,
       a,
+      resize,
+      canAnimation,
     };
   },
 };
@@ -71,7 +95,7 @@ export default {
 
 <style scoped>
 canvas {
-  background-color: #eee;
+  /* background-color: #eee; */
 }
 .nameBox {
   width: 100%;
