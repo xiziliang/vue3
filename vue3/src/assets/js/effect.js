@@ -77,9 +77,6 @@ export function trigger(target, type, key, value, oldValue) {
 }
 
 
-
-
-
 let stateData = {
     name:'xz'
 }

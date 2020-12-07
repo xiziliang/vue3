@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: brown;
+    }
+</style>
+
+<body>
+    <canvas id="canvas1" width="50" height="50"></canvas>
+    <canvas id="canvas2" width="50" height="50"></canvas>
+</body>
+<script>
+    function draw({
+        id,
+        text
+    }) {
+        /** @type {HTMLCanvasElement} */
+        const canvas = document.getElementById(id);
+        let ctx = canvas.getContext("2d");
+        ctx.translate(25, 25);
+        ctx.strokeStyle = '#fff';
+
+        ctx.beginPath();
+        ctx.lineWidth = 2;
+        ctx.arc(0, 0, 23, 0, Math.PI * 2 / 8);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+
+        ctx.arc(0, 0, 23, Math.PI * 4 / 8, Math.PI * 6 / 8);
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(0, 0, 23, Math.PI, Math.PI * 10 / 8);
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(0, 0, 23, Math.PI * 12 / 8, Math.PI * 14 / 8);
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(0, 0, 23, 0, Math.PI * 2 / 8);
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "#fff";
+        ctx.font = "25px 微软雅黑";
+        ctx.fillText(text,0,4);
+        ctx.closePath();
+    }
+    draw({
+        id: 'canvas1',
+        text: 1
+    });
+    draw({
+        id: 'canvas2',
+        text: 2
+    });
+</script>
+
+</html>
