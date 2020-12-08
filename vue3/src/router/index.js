@@ -24,6 +24,12 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Sprite.vue"),
   },
+  {
+    path: "/roughjs",
+    name: "roughjs",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/rough.vue"),
+  },
 ];
 
 const router = createRouter({

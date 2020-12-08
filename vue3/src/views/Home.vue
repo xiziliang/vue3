@@ -12,7 +12,7 @@ export default {
     name: "home",
   },
   setup(prop) {
-    const arr = reactive(["/CanvasHome", "/reactive", "/sprite"]);
+    const arr = reactive(["/CanvasHome", "/reactive", "/sprite", "roughjs"]);
     return {
       arr,
     };
