@@ -1,18 +1,40 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <homehearder
+      :curruntState="curruntState"
+      @changeState="changeState"
+    ></homehearder>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
-
+import { computed, defineComponent } from "vue";
+import { Store, useStore } from "vuex";
+import { GlobalState } from "../store/index";
+import { Select_Types } from "../type/index";
+import * as Type from "../type/action_types";
+import homehearder from "../components/home/homehearder.vue";
+function stateTought(store: Store<GlobalState>) {
+  const curruntState = computed(() => store.state.home.currentType);
+  const changeState = (curruntState: Select_Types) => {
+    console.log(curruntState);
+    store.commit(`home/${Type.CHANGE_TYPE}`, curruntState);
+  };
+  return {
+    curruntState,
+    changeState,
+  };
+}
 export default defineComponent({
-  name: 'Home',
+  name: "Home",
   components: {
-    HelloWorld,
+    homehearder,
+  },
+  setup() {
+    const store = useStore<GlobalState>();
+    const { curruntState, changeState } = stateTought(store);
+    console.log(curruntState);
+    return { store, curruntState, changeState };
   },
 });
 </script>
