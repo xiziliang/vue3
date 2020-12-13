@@ -1,8 +1,8 @@
 <template>
   <div class="CanvasHome">
     <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
-    <!-- <HelloWorld />
-    <Plan></Plan> -->
+    <!-- <HelloWorld /> -->
+    <!-- <Plan></Plan> -->
     <Canvas></Canvas>
   </div>
 </template>
