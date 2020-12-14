@@ -3,7 +3,7 @@
     <div>
       creat组件
     </div>
-    <button @click="onClick">点击</button>
+    <!-- <button @click="onClick">点击</button> -->
     <div v-for="(item, i) in planlist" :key="i">
       <div>大家好，我是{{ item.name }}</div>
     </div>
@@ -30,11 +30,12 @@ export default {
         state.planlist = [...newValue];
       }
     );
-    // const onClick = () => {
-    //   emit("handle", "我是子组件");
-    // };
+    const onClick = () => {
+      emit("handle", "我是子组件");
+    };
     return {
       ...toRefs(state),
+      // onClick,
     };
   },
 };
