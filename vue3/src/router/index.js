@@ -10,25 +10,31 @@ const routes = [
     path: "/CanvasHome",
     name: "CanvasHome",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/CanvasHome.vue"),
+      import(/* webpackChunkName: "CanvasHome" */ "../views/CanvasHome.vue"),
   },
   {
     path: "/reactive",
     name: "Reactive",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Reactive.vue"),
+      import(/* webpackChunkName: "reactive" */ "../views/Reactive.vue"),
   },
   {
     path: "/sprite",
     name: "Sprite",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Sprite.vue"),
+      import(/* webpackChunkName: "sprite" */ "../views/Sprite.vue"),
   },
   {
     path: "/roughjs",
     name: "roughjs",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/rough.vue"),
+      import(/* webpackChunkName: "roughjs" */ "../views/rough.vue"),
+  },
+  {
+    path: "/function",
+    name: "function",
+    component: () =>
+      import(/* webpackChunkName: "function" */ "../views/函数式编程.vue"),
   },
 ];
 

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+<script>
+    (function () {
+        /** 各个函数的作用
+         * @param randomTriangles  // 创建随机三角形属性的函数在·
+         * @param setUniforms   // 设置 uniform 变量 
+         * @param update  // 实现动画
+         * @param requestAnimationFrame   // 重复绘画的函数
+         */
+
+        /** @type {HTMLCanvasElement} */
+        const canvas = document.getElementById('canvas');
+        const gl = canvas.getContext('webgl');
+
+        // 顶点着色器
+        const vertex = `
+        attribute vec2 position;
+
+        uniform float u_rotation;
+        uniform float u_time;
+        uniform float u_duration;
+        uniform float u_scale;
+        uniform vec2 u_dir;
+
+        varying float vP;
+
+        void main() {
+            float p = min(1.0,u_time/u_duration); //p是动画进度 === 1为动画结束 比较大小返回较小的值
+            float rad = u_rotation + 3.14 * 10.0 * p;
+            float scale = u_scale * p * (2.0 - p); // 缓慢减少 
+            vec2 offect = 2.0 * u_dir * p * p; // 偏移量 缓慢增加
+            // mat 矩阵函数
+            mat3 translateMatrix = mat3(  //translateMatrix 平移矩阵
+                1.0, 0.0, 0.0,
+                0.0, 1.0, 0.0,
+                offset.x, offset.y, 1.0
+            );                             
+
+            mat3 rotateMatrix = mat3(     // rotateMatrix 旋转矩阵
+                cos(rad), sin(rad), 0.0,
+                -sin(rad), cos(rad), 0.0,
+                0.0, 0.0, 1.0
+            )
+
+            mat3 scaleMatrix = mat3(  // scaleMatrix 缩放矩阵
+                scale, 0.0 ,0.0,
+                0.0, scale, 0.0,
+                0.0, 0.0, 1.0
+            )
+            gl_PointSize = 1.0; // 给内置变量设置大小
+            vec3 pos = translateMatrix * rotateMatrix * scaleMatrix * vec3(position,1.0);
+            gl_Position = vec4(pos,1.0);
+            vP = p;
+
+        }
+        `;
+        // 片元着色器
+        const fragment = `
+        precision mediump float;
+        varying float vP;
+        void main(){
+            gl_FragColor.xyz = u_color.xyz; // ?
+            gl_FragColor.a = (1.0 - vP) * u_color.a; // ?
+        }
+        `;
+        // 创建顶点shader
+        const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+        // 将shader和着色器绑定
+        gl.shaderSource(vertexShader, vertex);
+        // 编译shader
+        gl.compileShader(vertexShader);
+        // 创建片元shader
+        const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fragmentShader, fragment);
+        gl.compileShader(fragmentShader);
+        // 创建一个程序
+        const program = gl.createProgram();
+        // 把着色器放到程序上
+        gl.attachShader(program, vertexShader);
+        gl.attachShader(program, fragmentShader);
+        // 链接上program
+        gl.linkProgram(program);
+        // 使用program
+        gl.useProgram(program);
+        // 创建三角形数据并放入缓冲区
+        const position = new Float32Array([-1, -1, 0, 1, 1, -1]);
+        const bufferId = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
+        gl.bufferData(gl.ARRAY_BUFFER, position, gl.STATIC_DRAW);
+
+        const vPosition = gl.getAttribLocation(program, 'position');
+        console.log('vPosition', vPosition);
+        // 告诉显卡从当前绑定的缓冲区读取顶点数据
+        gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
+        // 打开属性数组列表中指定索引处的通用顶点属性数组
+        gl.enableVertexAttribArray(vPosition);
+
+
+
+        /** 
+         * @param u_color  // 颜色
+         * @param u_rotation   // 初始旋转角度
+         * @param u_scale  // 初始大小
+         * @param u_time   // 三角形的生成时间
+         * @param u_duration   // 动画持续时间
+         * @param u_dir   // 运动方向
+         * @param startTime   // 创建时间
+         */
+        function randomTriangles() {
+            const u_color = [Math.random(), Math.random(), Math.random(), 1];
+            const u_rotation = Math.random() * Math.PI;
+            const u_scale = Math.random() * 0.05 + 0.3;
+            const u_time = 0;
+            const u_duration = 3;
+            const rad = Math.random() * Math.PI * 2;
+            const u_dir = [Math.cos(rad), Math.sin(rad)]; // [x,y]
+            const startTime = window.performance.now();
+            return {
+                u_color,
+                u_rotation,
+                u_scale,
+                u_time,
+                u_duration,
+                u_dir,
+                startTime
+            }
+        }
+
+        function setUniforms(gl, {
+            u_color,
+            u_rotation,
+            u_scale,
+            u_time,
+            u_duration,
+            u_dir,
+        }) {
+            // 获取指定名称uniform变量的存储地址
+            let loc = gl.getUniformLocation(program, 'u_color');
+            // 给片元shader传给 unfirom 变量的地址 u_color在片元中
+            gl.uniform4fv(loc, u_color);
+
+            loc = gl.getUniformLocation(program, 'u_rotation');
+            // 给顶点shader传给 unfirom 变量的地址 u_rotation在顶点
+            gl.uniform1f(loc, u_rotation);
+
+            loc = gl.getUniformLocation(program, 'u_scale');
+            gl.uniform1f(loc, u_scale);
+
+            loc = gl.getUniformLocation(program, 'u_time');
+            gl.uniform1f(loc, u_time);
+
+            loc = gl.getUniformLocation(program, 'u_duration');
+            gl.uniform1f(loc, u_duration);
+
+            loc = gl.getUniformLocation(program, 'u_dir');
+            gl.uniform2fv(loc, u_dir);
+        }
+
+        let triangles = [];
+
+        function update() {
+            for (let i = 0; i < Math.random() * 5; i++) {
+                triangles.push(randomTriangles());
+            }
+            // 清除原来背景色
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            triangles.forEach((item) => {
+                item.u_time = (window.performance.now() - item.startTime) / 1000;
+                setUniforms(gl, item);
+                gl.drawArrays(gl.TRIANGLES, 0, position.length / 2);
+            })
+            // 移除创三角形生成超过u_duration
+            triangles = triangles.filter((item) => {
+                return item.u_time <= item.u_duration;
+            })
+
+            requestAnimationFrame(update);
+        }
+        update();
+    })()
+</script>
+
+</html>

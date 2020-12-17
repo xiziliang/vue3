@@ -1,13 +1,11 @@
 <template>
   <div class="Sprite">
-    sprite
     <canvas id="canvas" width="512" height="512"></canvas>
   </div>
 </template>
 
 <script>
 import { reactive, toRefs, ref, onUpdated, onMounted } from "vue";
-import { parametric } from "../assets/js/higherFunction";
 import { myParametric } from "../assets/js/myHigherFunction";
 import Vector2D from '../assets/js/vector2D.js'
 // @ is an alias to /src
@@ -17,26 +15,26 @@ const drawCanvas = () => {
   ctx.translate(256, 256);
   ctx.scale(1, -1);
 
-  // const helical = myParametric(
-  //   (x, a) => a * x * Math.cos(x),
-  //   (y, a) => a * y * Math.sin(y)
-  // );
-  // //绘制出阿基米德螺旋线
-  // helical(0, 50, 500, 5).draw(ctx, { strokeStyle: "blue" });
+  const helical = myParametric(
+    (x, a) => a * x * Math.cos(x),
+    (y, a) => a * y * Math.sin(y)
+  );
+  //绘制出阿基米德螺旋线
+  helical(0, 50, 500, 5).draw(ctx, { strokeStyle: "blue" });
 
-  // const star = myParametric(
-  //   (x, a) => a * Math.cos(x) ** 3,
-  //   (y, a) => a * Math.sin(y) ** 3
-  // );
-  // // 星形线
-  // star(0, Math.PI * 2, 100, 150).draw(ctx, { strokeStyle: "yellow" });
+  const star = myParametric(
+    (x, a) => a * Math.cos(x) ** 3,
+    (y, a) => a * Math.sin(y) ** 3
+  );
+  // 星形线
+  star(0, Math.PI * 2, 100, 150).draw(ctx, { strokeStyle: "yellow" });
 
-  // // 心形线
-  // const heart = myParametric(
-  //   (x, r) => 2 * r * (Math.sin(x) - Math.sin(2 * x) / 2),
-  //   (y, r) => 2 * r * (Math.cos(y) - Math.cos(2 * y) / 2)
-  // );
-  // heart(0, Math.PI * 2, 100, 40).draw(ctx, { strokeStyle: "red" });
+  // 心形线
+  const heart = myParametric(
+    (x, r) => 2 * r * (Math.sin(x) - Math.sin(2 * x) / 2),
+    (y, r) => 2 * r * (Math.cos(y) - Math.cos(2 * y) / 2)
+  );
+  heart(0, Math.PI * 2, 100, 40).draw(ctx, { strokeStyle: "red" });
 
 
   // 三次贝塞尔曲线
