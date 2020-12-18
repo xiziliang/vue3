@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <canvas id="canvas"></canvas>
+    <canvas id="canvas" width="600" height="600"></canvas>
 </body>
 <script>
     (function () {
@@ -17,6 +17,7 @@
          * @param setUniforms   // 设置 uniform 变量 
          * @param update  // 实现动画
          * @param requestAnimationFrame   // 重复绘画的函数
+         * @tips 着色器语言 里 结尾一定要加分号,否则会报警告提示
          */
 
         /** @type {HTMLCanvasElement} */
@@ -36,42 +37,41 @@
         varying float vP;
 
         void main() {
-            float p = min(1.0,u_time/u_duration); //p是动画进度 === 1为动画结束 比较大小返回较小的值
+            float p = min(1.0, u_time / u_duration); //p是动画进度 === 1为动画结束 比较大小返回较小的值
             float rad = u_rotation + 3.14 * 10.0 * p;
             float scale = u_scale * p * (2.0 - p); // 缓慢减少 
-            vec2 offect = 2.0 * u_dir * p * p; // 偏移量 缓慢增加
+            vec2 offset = 2.0 * u_dir * p * p; // 偏移量 缓慢增加
             // mat 矩阵函数
             mat3 translateMatrix = mat3(  //translateMatrix 平移矩阵
                 1.0, 0.0, 0.0,
                 0.0, 1.0, 0.0,
                 offset.x, offset.y, 1.0
             );                             
-
             mat3 rotateMatrix = mat3(     // rotateMatrix 旋转矩阵
                 cos(rad), sin(rad), 0.0,
                 -sin(rad), cos(rad), 0.0,
                 0.0, 0.0, 1.0
-            )
-
+            );
             mat3 scaleMatrix = mat3(  // scaleMatrix 缩放矩阵
                 scale, 0.0 ,0.0,
                 0.0, scale, 0.0,
                 0.0, 0.0, 1.0
-            )
+            );
             gl_PointSize = 1.0; // 给内置变量设置大小
-            vec3 pos = translateMatrix * rotateMatrix * scaleMatrix * vec3(position,1.0);
-            gl_Position = vec4(pos,1.0);
+            vec3 pos = translateMatrix * rotateMatrix * scaleMatrix * vec3(position, 1.0);
+            gl_Position = vec4(pos, 1.0);
             vP = p;
-
         }
         `;
         // 片元着色器
         const fragment = `
         precision mediump float;
+        uniform vec4 u_color;
         varying float vP;
-        void main(){
-            gl_FragColor.xyz = u_color.xyz; // ?
-            gl_FragColor.a = (1.0 - vP) * u_color.a; // ?
+        void main()
+        {
+            gl_FragColor.xyz = u_color.xyz; // rgba 中的 rgb 进行赋值
+            gl_FragColor.a = (1.0 - vP) * u_color.a; // rgba 中 的a进行赋值
         }
         `;
         // 创建顶点shader
@@ -94,7 +94,11 @@
         // 使用program
         gl.useProgram(program);
         // 创建三角形数据并放入缓冲区
-        const position = new Float32Array([-1, -1, 0, 1, 1, -1]);
+        const position = new Float32Array([
+            -1, -1,
+             0, 1, 
+             1, -1,
+            ]);
         const bufferId = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
         gl.bufferData(gl.ARRAY_BUFFER, position, gl.STATIC_DRAW);
@@ -105,8 +109,6 @@
         gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
         // 打开属性数组列表中指定索引处的通用顶点属性数组
         gl.enableVertexAttribArray(vPosition);
-
-
 
         /** 
          * @param u_color  // 颜色
@@ -120,7 +122,7 @@
         function randomTriangles() {
             const u_color = [Math.random(), Math.random(), Math.random(), 1];
             const u_rotation = Math.random() * Math.PI;
-            const u_scale = Math.random() * 0.05 + 0.3;
+            const u_scale = Math.random() * 0.05 + 0.03;
             const u_time = 0;
             const u_duration = 3;
             const rad = Math.random() * Math.PI * 2;
