@@ -18,6 +18,7 @@
          * @param update  // 实现动画
          * @param requestAnimationFrame   // 重复绘画的函数
          * @tips 着色器语言 里 结尾一定要加分号,否则会报警告提示
+         * @tips2 输入的数字要保留一位小数
          */
 
         /** @type {HTMLCanvasElement} */
@@ -57,8 +58,13 @@
                 0.0, scale, 0.0,
                 0.0, 0.0, 1.0
             );
+            mat3 skewMatrix = mat3(  // skewMatrix 扭曲变换矩阵
+                1.0, tan(0.5), 0.0,
+                tan(0.5), 1.0, 0.0,
+                0.0, 0.0, 0.0
+            );
             gl_PointSize = 1.0; // 给内置变量设置大小
-            vec3 pos = translateMatrix * rotateMatrix * scaleMatrix * vec3(position, 1.0);
+            vec3 pos =  translateMatrix * rotateMatrix  * scaleMatrix  * vec3(position, 1.0); // 三个矩阵相乘的循序不同效果不同
             gl_Position = vec4(pos, 1.0);
             vP = p;
         }
