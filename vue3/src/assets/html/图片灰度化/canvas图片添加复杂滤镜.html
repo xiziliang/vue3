@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <canvas id="paper" width="0" height="0"></canvas>
+</body>
+
+<script type="module">
+  import { myGetImageData, loadImage, traverse , gaussianBlur , transformColor , getPixel , brightness , saturate} from './utils.js';
+
+    const canvas = document.getElementById('paper');
+    const context = canvas.getContext('2d');
+
+    (async function () {
+        /** @type {HTMLCanvasElement} */
+
+        // 异步加载图片
+        const img = await loadImage('./img/girl1.jpg');
+        const sun = await loadImage('./img/sunlight.png');
+        const imageData = myGetImageData(img);
+        const sunData = myGetImageData(sun);
+        // 添加纹理
+        traverse(imageData, ({r, g, b, a, index}) => { 
+          const texColor = getPixel(sunData, index); 
+          // console.log(texColor);
+          return transformColor([r, g, b, a], brightness(1 + 0.7 * texColor[3]), saturate(2 - texColor[3])); 
+        });
+
+        //图片边缘化
+        // traverse(imageData, ({ r, g, b, a , x , y}) => { // 对每个像素进行灰度化处理 
+        //   // console.log(r, g, b, a , x , y)
+        //   const d = Math.hypot((x - 0.5),(y - 0.5)); // 圆方程
+        //   a *= 1.0 - 2 * d;
+        //   return [r,g,b,a];
+        // });
+        canvas.width = imageData.width; 
+        canvas.height = imageData.height; 
+        context.putImageData(imageData, 0, 0);
+    }());
+</script>
+
+</html>

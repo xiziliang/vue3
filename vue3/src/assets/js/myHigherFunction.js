@@ -15,6 +15,7 @@ function draw(points, ctx, {
     ctx.fillStyle = fillStyle;
     ctx.fill();
   }
+  console.log(this)
   ctx.stroke();
 }
 
@@ -24,7 +25,7 @@ export function myParametric(xFun, yFun) {
     for (let i = 0; i < size; i++) {
       const p = i / size;
       const t = start * (1 - p) + end * p;
-      console.log(...args)
+      // console.log(...args)
       const x = xFun(t, ...args);
       const y = yFun(t, ...args);
       // console.log(x,y)

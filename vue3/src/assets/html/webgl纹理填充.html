@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="500" height="250"></canvas>
+</body>
+<script src="../../../node_modules/gl-renderer/dist/gl-renderer.js"></script>
+<script>
+    // webgl 原生写法
+
+    // function createTexture(gl, img) {
+    //   // 创建纹理对象
+    //   const texture = gl.createTexture();
+
+    //   // 设置预处理函数，由于图片坐标系和WebGL坐标的Y轴是反的，这个设置可以将图片Y坐标翻转一下
+    //   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+    //   // 激活指定纹理单元，WebGL有多个纹理单元，因此在Shader中可以使用多个纹理
+    //   gl.activeTexture(gl.TEXTURE0);
+
+    //   // 将纹理绑定到当前上下文
+    //   gl.bindTexture(gl.TEXTURE_2D, texture);
+
+    //   // 指定纹理图像
+    //   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+
+    //   // 设置纹理的一些参数
+    //   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    //   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    //   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    //   // 解除纹理绑定
+    //   gl.bindTexture(gl.TEXTURE_2D, null);
+
+    //   return texture;
+    // }
+
+    // function setTexture(gl, idx) {
+    //   // 激活纹理单元
+    //   gl.activeTexture(gl.TEXTURE0 + idx);
+    //   // 绑定纹理
+    //   gl.bindTexture(gl.TEXTURE_2D, texture);
+    //   // 获取shader中纹理变量
+    //   const loc = gl.getUniformLocation(program, 'tMap');
+    //   // 将对应的纹理单元写入shader变量
+    //   gl.uniform1i(loc, idx);
+    //   // 解除纹理绑定
+    //   gl.bindTexture(gl.TEXTURE_2D, null);
+    // }
+
+
+    // 用gl_renderer
+    (async function () {
+        /** @type {HTMLCanvasElement} */
+
+        const canvas = document.getElementById('canvas');
+        const renderer = new GlRenderer(canvas);
+        const vertex = `
+        attribute vec2 a_vertexPosition;
+        attribute vec2 uv;
+        varying vec2 vUv;
+    
+        void main(){
+            //纹理坐标插值计算 
+            //前面说过关键字attribute声明的顶点数据赋值给varying关键字声明的变量,
+            //该顶点数据在顶点光栅化的时候会进行插值计算，内插出一系列和片元一一对应的数据，不论顶点的颜色数据，还是顶点的纹理坐标数据都会进行插值计算。
+            vUv = uv;
+            gl_Position = vec4(a_vertexPosition,1,1);
+            gl_PointSize = 1.0;
+        }
+        `;
+        const fragment = `
+            #ifdef GL_ES
+            precision highp float;
+            #endif
+    
+            uniform sampler2D tMap;
+            uniform mat4 colorMatrix;
+            uniform float uTime;
+            varying vec2 vUv;
+
+            float random (vec2 st) 
+            { 
+                return fract(sin(dot(st.xy, vec2(12.9898,78.233)))* 43758.5453123);
+            }
+            void main() {
+                vec2 st = vUv * vec2(100.0,55.4);
+                vec2 uv = vUv + 1.0 - 2.0 * random(floor(st));
+                // vUv 正常纹理坐标 uv偏移纹理坐标
+                vec4 color = texture2D(tMap, mix(uv, vUv, min(uTime, 1.0)));//用 mix 函数对偏移后的 uv 和原始的 vUv 相对于时间变化进行插值。当初始时间为 0 的时候，取色从 uv 取；当时间超过一个周期的时候，取色从 vUv 取；当时间在中间时，取值介于 uv 和 vUv 之间。
+                gl_FragColor.rgb = color.rgb;
+                gl_FragColor.a = color.a * uTime;
+            }
+        `;
+        const program = renderer.compileSync(fragment, vertex);
+        renderer.useProgram(program);
+        const texture = await renderer.loadTexture('https://p1.ssl.qhimg.com/t01cca5849c98837396.jpg');
+        renderer.uniforms.tMap = texture;
+        const r = 0.2126,
+            g = 0.7152,
+            b = 0.0722;
+        renderer.uniforms.colorMatrix = [
+            r, r, r, 0,
+            g, g, g, 0,
+            b, b, b, 0,
+            0, 0, 0, 1
+        ]
+        // renderer.uniforms.colorMatrix = [
+        //     r,g,b,0,
+        //     r,g,b,0,
+        //     r,g,b,0,
+        //     0,0,0,1
+        // ]
+        renderer.setMeshData([{
+            positions: [
+                [-1, -1],
+                [-1, 1],
+                [1, 1],
+                [1, -1],
+            ],
+            attributes: {
+                uv: [
+                    [0, 0],
+                    [0, 1],
+                    [1, 1],
+                    [1, 0],
+                ],
+            },
+            cells: [
+                [0, 1, 2],
+                [2, 0, 3]
+            ],
+        }]);
+        renderer.render();
+
+        function update(t) {
+            renderer.uniforms.uTime = t / 2000;
+            let fn = requestAnimationFrame(update);
+            if (t > 2000) {
+                cancelAnimationFrame(fn);
+            }
+        }
+        update(0);
+    })();
+</script>
+
+</html>
