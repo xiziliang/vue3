@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <canvas id="canvas" width="500" height="250"></canvas>
+    <canvas id="canvas" width="1000" height="500"></canvas>
 </body>
 <script src="../../../node_modules/gl-renderer/dist/gl-renderer.js"></script>
 <script>
@@ -89,7 +89,7 @@
                 return fract(sin(dot(st.xy, vec2(12.9898,78.233)))* 43758.5453123);
             }
             void main() {
-                vec2 st = vUv * vec2(100.0,55.4);
+                vec2 st = vUv * vec2(1000.0,554.0);
                 vec2 uv = vUv + 1.0 - 2.0 * random(floor(st));
                 // vUv 正常纹理坐标 uv偏移纹理坐标
                 vec4 color = texture2D(tMap, mix(uv, vUv, min(uTime, 1.0)));//用 mix 函数对偏移后的 uv 和原始的 vUv 相对于时间变化进行插值。当初始时间为 0 的时候，取色从 uv 取；当时间超过一个周期的时候，取色从 vUv 取；当时间在中间时，取值介于 uv 和 vUv 之间。
@@ -97,6 +97,8 @@
                 gl_FragColor.a = color.a * uTime;
             }
         `;
+
+        // uv坐标 相当于 四个坐标分别对应 position四个坐标，相当于把uv贴到画布上去，整个position坐标被uv的坐标代替 （内部是通过分割成三角形来实现的）
         const program = renderer.compileSync(fragment, vertex);
         renderer.useProgram(program);
         const texture = await renderer.loadTexture('https://p1.ssl.qhimg.com/t01cca5849c98837396.jpg');
@@ -110,12 +112,6 @@
             b, b, b, 0,
             0, 0, 0, 1
         ]
-        // renderer.uniforms.colorMatrix = [
-        //     r,g,b,0,
-        //     r,g,b,0,
-        //     r,g,b,0,
-        //     0,0,0,1
-        // ]
         renderer.setMeshData([{
             positions: [
                 [-1, -1],
@@ -133,7 +129,7 @@
             },
             cells: [
                 [0, 1, 2],
-                [2, 0, 3]
+                [2, 3, 0]
             ],
         }]);
         renderer.render();
