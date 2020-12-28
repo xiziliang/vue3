@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+</body>
+<script src="../../../node_modules/gl-renderer/dist/gl-renderer.js"></script>
+<script>
+    const canvas = document.getElementById('canvas');
+    const renderer = new GlRenderer(canvas);
+
+    const vertex = `
+    attribute vec2 a_vertexPosition;
+    attribute vec2 uv;
+
+    varying vec2 vUv;
+    void main(){
+        vUv = uv;
+        gl_PointSize = 1.0;
+        gl_Position = vec4(a_vertexPosition,1,1);
+    }`;
+    const fargment = `
+    #ifdef GL_ES
+    precision highp float;
+    #endif
+
+    varying vec2 vUv;
+
+    void main() {
+        float d = distance(vUv , vec2(0.5));
+        gl_FragColor.rgb = smoothstep(d,d+0.01,0.2) * vec3(1.0);
+        gl_FragColor.a = 1.0;
+    }
+    `;
+
+    const program = renderer.compileSync(fargment, vertex);
+    renderer.useProgram(program);
+
+    renderer.setMeshData({
+        positions: [
+            [-1, -1],
+            [-1, 1],
+            [1, 1],
+            [1, -1]
+        ],
+        attributes: {
+            uv: [
+                [0, 0],
+                [0, 1],
+                [1, 1],
+                [1, 0]
+            ]
+        },
+        cells: [
+            [0, 1, 2],
+            [2, 0, 3]
+        ]
+    })
+    renderer.render();
+</script>
+
+</html>

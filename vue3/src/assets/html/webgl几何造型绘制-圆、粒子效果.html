@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="1000" height="500"></canvas>
+</body>
+<script src="../../../node_modules/gl-renderer/dist/gl-renderer.js"></script>
+<script>
+    const canvas = document.getElementById('canvas');
+    const renderer = new GlRenderer(canvas);
+
+    const vertex = `
+    attribute vec2 a_vertexPosition;
+    attribute vec2 uv;
+
+    varying vec2 vUv;
+    void main(){
+        vUv = uv;
+        gl_PointSize = 1.0;
+        gl_Position = vec4(a_vertexPosition,1,1);
+    }`;
+    const fargment = `
+    #ifdef GL_ES
+    precision highp float;
+    #endif
+
+    uniform sampler2D tMap;
+    uniform vec2 uResolution;
+    uniform float uTime;
+    varying vec2 vUv;
+
+    float random (vec2 st) { 
+        return fract(sin(dot(st.xy, vec2(12.9898,78.233)))* 43758.5453123);
+    }
+
+    void main() {
+        vec2 uv = vUv;
+        uv.y *= uResolution.y / uResolution.x;
+        vec2 st = uv * 100.0;
+        float d = distance(fract(st), vec2(0.5));
+        float p = uTime + random(floor(st));
+        float shading = 0.5 + 0.5 * sin(p); // 0-1 取值
+
+        d = smoothstep(d, d + 0.01, 1.0 * shading); // 设置若隐若现圆的半径
+        
+        vec4 color = texture2D(tMap, vUv);
+        gl_FragColor.rgb = color.rgb * clamp(0.5, 1.3, d + 1.0 * shading);
+        gl_FragColor.a = color.a;
+
+    }
+    `;
+    const program = renderer.compileSync(fargment, vertex);
+    renderer.useProgram(program);
+    (async function (){
+        const texture  = await renderer.loadTexture("https://p1.ssl.qhimg.com/t01cca5849c98837396.jpg");
+        renderer.uniforms.tMap = texture;
+        renderer.uniforms.uResolution = [canvas.width,canvas.height]
+        renderer.uniforms.uTime = 0;
+        renderer.setMeshData({
+            positions: [
+                [-1, -1],
+                [-1, 1],
+                [1, 1],
+                [1, -1]
+            ],
+            attributes: {
+                uv: [
+                    [0, 0],
+                    [0, 1],
+                    [1, 1],
+                    [1, 0]
+                ]
+            },
+            cells: [
+                [0, 1, 2],
+                [2, 0, 3]
+            ]
+        })
+        renderer.render();
+        function update(t){
+            renderer.uniforms.uTime = t/1000;
+            let fn = requestAnimationFrame(update);
+            if(t > 8000){
+                cancelAnimationFrame(fn);
+            }
+        }
+        update(0)
+    })()
+</script>
+
+</html>

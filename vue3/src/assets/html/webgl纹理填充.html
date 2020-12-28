@@ -98,7 +98,7 @@
             }
         `;
 
-        // uv坐标 相当于 四个坐标分别对应 position四个坐标，相当于把uv贴到画布上去，整个position坐标被uv的坐标代替 （内部是通过分割成三角形来实现的）
+        // !! uv坐标 相当于 四个坐标分别对应 position四个坐标，相当于把uv贴到画布上去，整个position坐标被uv的坐标代替 （内部是通过分割成三角形来实现的）
         const program = renderer.compileSync(fragment, vertex);
         renderer.useProgram(program);
         const texture = await renderer.loadTexture('https://p1.ssl.qhimg.com/t01cca5849c98837396.jpg');
