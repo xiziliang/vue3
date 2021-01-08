@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://anijs.github.io/lib/anicollection/anicollection.css">
+
+    <title>Document</title>
+</head>
+<style>
+    header {
+        height: 45px;
+        width: 100%;
+        background-color: #2d3e50;
+        color: white;
+        font-size: 150%;
+        margin-bottom: 10px;
+    }
+
+    #main {
+        width: 100%;
+        height: 400px;
+        background: #1f8dd6;
+        color: white;
+        font-size: 150%;
+    }
+
+    footer {
+        margin-top: 10px;
+        height: 40px;
+        background-color: #2d3e50;
+        color: white;
+        font-size: 150%;
+    }
+</style>
+
+<body>
+    <header data-anijs="if: click, do: flipInY animated">
+        header (Click here)
+    </header>
+    <div id="main" data-anijs="if: mouseover, do: swing animated">
+        Main (MouseOver)
+    </div>
+    <footer data-anijs="if:click, do: hinge animated, to: #main">
+        footer (Click here)
+    </footer>
+</body>
+<script src="../../plugins/anijs-min.js"></script>
+</html>

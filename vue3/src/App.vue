@@ -3,7 +3,20 @@
     <router-view />
   </div>
 </template>
+<script>
+//当 router-view 的组件含有 async setup 时，会渲染 fallback 内容
+// <Suspense>
+//   <template #default>
+//     <router-view />
+//   </template>
+//   <template #fallback>
+//     <span>I'm a loading screen, I'm waiting the view to be ready!</span>
+//   </template>
+// </Suspense>
+export default {
 
+}
+</script>
 <style>
 #app {
   height: 100%;

@@ -26,7 +26,6 @@ export default createStore({
       commit(types.ADD_PLAN, plan);
     },
     async [types.SET_PLAN]({ commit }, payload) {
-      debugger;
       let plan = await api.getPlan(payload);
       commit(types.SET_PLAN, plan);
     },
