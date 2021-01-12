@@ -10,7 +10,7 @@
     </template>
   </Suspense>
   <!--Teleport 所渲染的位置是在他所选择id的内部  -->
-  <!-- <TeleportModal name="#app"></TeleportModal> -->
+  <TeleportModal name="#app"></TeleportModal>
 </template>
 
 <script>

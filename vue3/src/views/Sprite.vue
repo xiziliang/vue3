@@ -1,5 +1,10 @@
 <template>
-  <div class="Sprite">sprite</div>
+  <div class="Sprite" >
+    sprite
+    <!-- <div v-lazyimg:xxx="require('../assets/img/success.png')">
+      <img src="">
+    </div> -->
+  </div>
 </template>
 
 <script>
@@ -13,4 +18,11 @@ export default {
 };
 </script>
 <style scoped>
+.Sprite{
+  padding-top: 100vh;
+}
+img{
+  width: 500px;
+  height: 400px;
+}
 </style>

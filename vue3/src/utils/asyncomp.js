@@ -7,9 +7,9 @@ export const AsyncComp = defineAsyncComponent({
     // 工厂函数
     loader: () => import('../components/Suspense.vue'),
     // 加载异步组件时要使用的组件
-    loadingComponent: Suspense,
+    loadingComponent: Suspense, // loading 组件
     // 加载失败时要使用的组件
-    // errorComponent: Error,
+    // errorComponent: Error, // error 组件
     // 在显示 loadingComponent 之前的延迟 | 默认值：200（单位 ms）
     delay: 200,
     // 如果提供了 timeout ，并且加载组件的时间超过了设定值，将显示错误组件
