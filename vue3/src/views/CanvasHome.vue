@@ -1,7 +1,7 @@
 <template>
   <div class="CanvasHome">
     <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
-    <!-- <HelloWorld /> -->
+    <!-- <HelloWorld :msg="msg" msg2="周老师" /> -->
     <!-- <Plan></Plan> -->
     <Canvas></Canvas>
   </div>
@@ -12,12 +12,19 @@
 import HelloWorld from "@/components/HelloWorld.vue";
 import Plan from "../components/Plan";
 import Canvas from "../components/Canvas";
+import { ref } from "vue";
 export default {
   name: "CanvasHome",
   components: {
     HelloWorld,
     Plan,
     Canvas,
+  },
+  setup(props) {
+    const msg = ref("你好");
+    return {
+      msg,
+    };
   },
 };
 </script>

@@ -1,19 +1,25 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1>{{ msg }}{{ msg2 }}</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
   props: {
     msg: {
-      type:String,
-      default:'baby,今晚打老虎！'
-    }
-  }
-}
+      type: String,
+      default: "baby,今晚打老虎！",
+    },
+    msg2: {
+      type: String,
+    },
+  },
+  setup(props) {
+    console.log(props);
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
