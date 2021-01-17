@@ -66,7 +66,7 @@ const drawCanvas = () => {
   }
 };
 export default {
-  name: "Sprite",
+  name: "fn",
   components: {},
   setup(prop, ctx) {
     onMounted(() => {

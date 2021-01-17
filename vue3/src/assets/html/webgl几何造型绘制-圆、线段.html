@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-
+<style>
+    html,body{
+        margin: 0;
+        padding: 0;
+    }
+</style>
 <body>
     <canvas id="canvas" width="500" height="500"></canvas>
 </body>
@@ -29,19 +34,35 @@
     #ifdef GL_ES
     precision highp float;
     #endif
-
+    uniform vec2 uMouse;
     varying vec2 vUv;
 
     void main() {
-        float d = distance(vUv , vec2(0.5));
-        gl_FragColor.rgb = smoothstep(d,d+0.01,0.2) * vec3(1.0);
-        gl_FragColor.a = 1.0;
+        // 直线
+        vec3 line = vec3(uMouse,0.0); // 总是从（0,0）开始花点，终点坐标是line的坐标
+        float d = abs(cross(vec3(vUv,0), normalize(line)).z);
+        if( d  > 0.0){ // 指的是 点到线 超过d的都上黑色,剩余部分没上色
+            gl_FragColor.rgb = (1.0 - smoothstep(0.0, 0.01, d)) * vec3(1.0); //smoothstep (x y k) y必须大于x,k如果小于x,返回 0 ,如果k>y ,返回1 在x y之间 返回  3k^2-2k^3
+            gl_FragColor.a = 1.0;
+        }
+        // 圆
+        // float d = distance(vUv , vec2(0.5));
+        // gl_FragColor.rgb = smoothstep(d,d+0.01,0.2) * vec3(1.0);
+        // gl_FragColor.a = 1.0;
     }
     `;
 
     const program = renderer.compileSync(fargment, vertex);
     renderer.useProgram(program);
-
+    renderer.uniforms.uMouse = [-1,-1];
+    canvas.addEventListener('mousemove',(e)=>{
+        const {x,y,width,height} = e.target.getBoundingClientRect();
+        renderer.uniforms.uMouse = [
+            (e.x - x) / width,
+            1 - (e.y - y) / height
+        ]
+        console.log(renderer.uniforms.uMouse);
+    })
     renderer.setMeshData({
         positions: [
             [-1, -1],
@@ -58,8 +79,8 @@
             ]
         },
         cells: [
-            [0, 1, 2],
-            [2, 0, 3]
+            [1, 2, 3],
+            [0, 1, 3]
         ]
     })
     renderer.render();

@@ -36,6 +36,12 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "function" */ "../views/函数式编程.vue"),
   },
+  {
+    path: "/susAndTemp",
+    name: "susAndTemp",
+    component: () =>
+      import(/* webpackChunkName: "susAndTemp" */ "../views/SuspenseAndTemplate.vue"),
+  },
 ];
 
 const router = createRouter({

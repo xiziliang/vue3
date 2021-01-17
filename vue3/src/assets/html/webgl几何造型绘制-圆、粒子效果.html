@@ -50,7 +50,7 @@
         d = smoothstep(d, d + 0.01, 1.0 * shading); // 设置若隐若现圆的半径
         
         vec4 color = texture2D(tMap, vUv);
-        gl_FragColor.rgb = color.rgb * clamp(0.5, 1.3, d + 1.0 * shading);
+        gl_FragColor.rgb = color.rgb * clamp(0.5, 1.3, d + 1.0 * shading); // clamp规整输入值,x与min和max比较大小返回中间大小的值
         gl_FragColor.a = color.a;
 
     }
@@ -86,7 +86,8 @@
         function update(t){
             renderer.uniforms.uTime = t/1000;
             let fn = requestAnimationFrame(update);
-            if(t > 8000){
+            console.log(t)
+            if(t > 6800){
                 cancelAnimationFrame(fn);
             }
         }

@@ -4,7 +4,7 @@ export function add(a, b) {
       aNumCols = a[0].length;
     const bNumRows = b.length,
       bNumCols = b[0].length;
-    if((aNumRows !== bNumRows) && (aNumCols !== bNumCols)) {
+    if ((aNumRows !== bNumRows) && (aNumCols !== bNumCols)) {
       throw new Error('matrices differ in dimensions');
     }
     return {
@@ -14,9 +14,9 @@ export function add(a, b) {
   })();
 
   const m = new Array(dimensions.nrows); // initialize array of rows
-  for(let r = 0; r < dimensions.nrows; ++r) {
+  for (let r = 0; r < dimensions.nrows; ++r) {
     m[r] = new Array(dimensions.ncols); // initialize the current row
-    for(let c = 0; c < dimensions.ncols; ++c) {
+    for (let c = 0; c < dimensions.ncols; ++c) {
       m[r][c] = a[r][c] + b[r][c];
     }
   }
@@ -30,11 +30,11 @@ export function multiply(a, b) {
   const bNumRows = b.length,
     bNumCols = b[0].length;
   const m = new Array(aNumRows); // initialize array of rows
-  for(let r = 0; r < aNumRows; ++r) {
+  for (let r = 0; r < aNumRows; ++r) {
     m[r] = new Array(bNumCols); // initialize the current row
-    for(let c = 0; c < bNumCols; ++c) {
+    for (let c = 0; c < bNumCols; ++c) {
       m[r][c] = 0; // initialize the current cell
-      for(let i = 0; i < aNumCols; ++i) {
+      for (let i = 0; i < aNumCols; ++i) {
         m[r][c] += a[r][i] * b[i][c];
       }
     }
@@ -46,9 +46,9 @@ export function scalarMul(a, matrix) {
   const aNumRows = matrix.length;
   const aNumCols = matrix[0].length;
   const m = new Array(aNumRows); // initialize array of rows
-  for(let r = 0; r < aNumRows; ++r) {
+  for (let r = 0; r < aNumRows; ++r) {
     m[r] = new Array(aNumCols); // initialize the current row
-    for(let c = 0; c < aNumCols; ++c) {
+    for (let c = 0; c < aNumCols; ++c) {
       m[r][c] = a * matrix[r][c];
     }
   }
@@ -57,7 +57,7 @@ export function scalarMul(a, matrix) {
 
 export function display(m) {
   const rv = [];
-  for(let r = 0; r < m.length; ++r) {
+  for (let r = 0; r < m.length; ++r) {
     rv.push(m[r].join(' '));
   }
   return rv.join('\n');
