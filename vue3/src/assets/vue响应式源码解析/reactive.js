@@ -63,3 +63,42 @@ function trigger(target, key) {
   let effects = depsMap.get(key);
   effects && effects.forEach((effect) => effect());
 }
+
+// reactive 源码
+const isObject = (val) => val !== null && typeof val === 'object';
+function reactive(target) {
+  // if trying to observe a readonly proxy, return the readonly version.
+  if (target && target["__v_isReadonly" /* IS_READONLY */]) {
+      return target;
+  }
+  return createReactiveObject(target, false, mutableHandlers, mutableCollectionHandlers);
+}
+
+function createReactiveObject(target, isReadonly, baseHandlers, collectionHandlers) {
+  if (!isObject(target)) {
+      {
+          console.warn(`value cannot be made reactive: ${String(target)}`);
+      }
+      return target;
+  }
+  // target is already a Proxy, return it.
+  // exception: calling readonly() on a reactive object
+  if (target["__v_raw" /* RAW */] &&
+      !(isReadonly && target["__v_isReactive" /* IS_REACTIVE */])) {
+      return target;
+  }
+  // target already has corresponding Proxy
+  const proxyMap = isReadonly ? readonlyMap : reactiveMap;
+  const existingProxy = proxyMap.get(target);
+  if (existingProxy) {
+      return existingProxy;
+  }
+  // only a whitelist of value types can be observed.
+  const targetType = getTargetType(target);
+  if (targetType === 0 /* INVALID */) {
+      return target;
+  }
+  const proxy = new Proxy(target, targetType === 2 /* COLLECTION */ ? collectionHandlers : baseHandlers);
+  proxyMap.set(target, proxy);
+  return proxy;
+}

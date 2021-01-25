@@ -258,12 +258,13 @@ Please use the ${newApi} instead.`;
 
     //-----函数的纯度、可测试性和可维护性----start--------
 
+    // 多写纯函数
     function batch(fn) {
-        return function (subject, ...args) {
+        return function (subject, ...args) { // ...args = [xxx,xx,x]
             if (Array.isArray(subject)) {
-                return subject.map((s) => {
-                    return fn.call(this, s, ...args);
-                });
+                return subject.map((item) => {
+                    return fn.call(this, item, ...args) // ...args == 展开数组 args
+                })
             }
             return fn.call(this, subject, ...args);
         }
@@ -271,6 +272,41 @@ Please use the ${newApi} instead.`;
 
 
     //-----函数的纯度、可测试性和可维护性----end--------
+
+
+    //--------高阶函数的范式---------start----------
+    // 高阶函数的等阶范式 HOFO
+    function HOFO(fn) {
+        return function (...args) {
+            return fn.apply(this, args);
+        }
+    }
+
+    // 高阶函数的递归范式 continous
+    function continous(fn) {
+        return function (...args) {
+            return args.reduce((a, b) => fn(a, b))
+        }
+    }
+    const add = continous((a, b) => a + b);
+    console.log(add(1, 2, 3, 4)); // 1 + 2 + 3 + 4 = 10
+
+    // 高阶函数任意组合范式
+    function pipe(...fns) {
+        return function (input) {
+            return fns.reduce((a, b) => {
+                return b.call(this, a);
+            }, input) // input 初始值
+        }
+    }
+
+    const double = (x) => x * 2;
+    const half = (x) => x / 2;
+    const pow2 = (x) => x ** 2;
+
+    const cacl = pipe(double, pow2, half);
+    const result = cacl(10); // (10 * 2) ** 2 / 2 = 200
+    //--------高阶函数的范式---------end----------
 </script>
 
 </html>

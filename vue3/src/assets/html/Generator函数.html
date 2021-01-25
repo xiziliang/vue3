@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    function* demo(num) {
+        for (let i = 0; i < num; i++) {
+            yield new Promise((resolve, reject) => {
+                document.addEventListener('keydown', function f({
+                    key
+                }) {
+                    if (key === 'k') {
+                        document.removeEventListener('keydown', f);
+                        resolve(true);
+                    }
+                });
+
+            })
+        }
+    }
+    async function start() {
+        for (const iterator of demo(10)) {
+            let a = await iterator;
+            console.log(a);
+        }
+    }
+    start();
+</script>
+
+</html>
