@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    function defer() {
+        const deferred = {};
+        deferred.promise = new Promise((resolve, reject) => {
+            deferred.resolve = resolve;
+            deferred.reject = reject;
+        });
+        return deferred;
+    }
+    const _state = Symbol('state');
+    const _checkers = Symbol('checker');
+    class Signal {
+        constructor(initState) {
+            this[_state] = initState;
+            this[_checkers] = new Map();
+        }
+        get state() {
+            return this[_state];
+        }
+        set state(value){
+            [...this[_checkers]].forEach((item) => {
+                console.log(item)
+            });
+        }
+    }
+    const signal = new Signal();
+    console.log(signal);
+</script>
+
+</html>

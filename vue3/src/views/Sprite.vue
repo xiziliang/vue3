@@ -1,28 +1,44 @@
 <template>
-  <div class="Sprite" >
-    sprite
+  <div class="Sprite">
+    sprite {{ val }}
     <!-- <div v-lazyimg:xxx="require('../assets/img/success.png')">
       <img src="">
-    </div> -->
+    </div>-->
   </div>
 </template>
 
 <script>
 import { reactive, toRefs, ref, onUpdated, onMounted, onErrorCaptured } from "vue";
+import { Observable, timer } from 'rxjs'
+import { option } from '../utils/echartsOption.js'
 import GlRenderer from "gl-renderer";
 export default {
   name: "Sprite",
   setup(prop, ctx) {
-
+    const val = ref(0);
+    const time$ = timer(0,2000).subscribe((res)=>{
+      if(val.value === 5){
+        time$.unsubscribe();
+      }
+      console.log(val.value++)
+    })
+    return {
+      val,
+      time$
+    }
   },
 };
 </script>
 <style scoped>
-.Sprite{
+.Sprite {
   padding-top: 100vh;
 }
-img{
+img {
   width: 500px;
   height: 400px;
+}
+#demo {
+  width: 100%;
+  height: 500px;
 }
 </style>

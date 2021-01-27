@@ -42,6 +42,12 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "susAndTemp" */ "../views/SuspenseAndTemplate.vue"),
   },
+  {
+    path: "/echarts5",
+    name: "echarts5",
+    component: () =>
+      import(/* webpackChunkName: "echarts5" */ "../views/Echarts5.vue"),
+  },
 ];
 
 const router = createRouter({
