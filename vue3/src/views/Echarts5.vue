@@ -6,7 +6,7 @@
 
 <script>
 import { reactive, toRefs, ref, onUpdated, onMounted, onErrorCaptured } from "vue";
-import { option } from '../utils/echartsOption.js'
+import * as Eoption from '../utils/echartsOption.js'
 import GlRenderer from "gl-renderer";
 export default {
   name: "Echarts5",
@@ -14,7 +14,7 @@ export default {
     onMounted(() => {
       const chartDom = document.getElementById('demo');
       const myChart = echarts.init(chartDom);
-      myChart.setOption(option)
+      myChart.setOption(Eoption.option)
     })
     return {
     }

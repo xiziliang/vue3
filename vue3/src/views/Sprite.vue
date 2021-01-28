@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, ref, onUpdated, onMounted, onErrorCaptured } from "vue";
+import { reactive, toRefs, ref, onUpdated, onMounted,onUnmounted, onErrorCaptured } from "vue";
 import { Observable, timer } from 'rxjs'
 import { option } from '../utils/echartsOption.js'
 import GlRenderer from "gl-renderer";
@@ -18,9 +18,13 @@ export default {
     const val = ref(0);
     const time$ = timer(0,2000).subscribe((res)=>{
       if(val.value === 5){
+        alert('午时已到!')
         time$.unsubscribe();
       }
       console.log(val.value++)
+    })
+    onUnmounted(()=>{
+      time$.unsubscribe();
     })
     return {
       val,
