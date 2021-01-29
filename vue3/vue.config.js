@@ -1,9 +1,9 @@
 module.exports = {
-  outputDir:process.env.outputDir,
+  outputDir: process.env.outputDir,
   devServer: {
     overlay: {
-        warnings: false,
-        errors: false
+      warnings: false,
+      errors: false
     },
-}
+  }
 }
