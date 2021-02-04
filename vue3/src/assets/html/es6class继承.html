@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+</style>
+
+<body>
+    <div class="box">
+        <div class="box2">
+        </div>
+    </div>
+</body>
+<script>
+   class Person{
+       constructor({name,age}){
+            this.name = name;
+            this.age = age;
+            this.name = this.geInfo();
+       }
+       geInfo(){
+           return `我是${this.name}，今年${this.age}岁！`
+       }
+   }
+   class Children extends Person{
+       constructor({name,age,address}){
+           super({name,age}); // 只能继承父拥有的属性
+        //    this.address = address;
+       }
+       geInfo(){
+           return `我是${this.name}他爸！`
+       }
+   }
+ let person1 = new Person({name:'小明',age:19})
+ let person2 = new Children({name:'小花',age:19})
+ console.log(person1.geInfo())
+ console.log(person2)
+</script>
+
+</html>

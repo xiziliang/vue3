@@ -55,9 +55,8 @@ const routes = [
       import(/* webpackChunkName: "threejs" */ "../views/Threejs.vue"),
   },
 ];
-
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(process.env.BASE_URL),
   routes,
 });
 

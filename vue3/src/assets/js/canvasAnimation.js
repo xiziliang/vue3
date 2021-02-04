@@ -162,7 +162,6 @@ export default class canvasAnimation {
     this.context.clearRect(0, 0, window.innerWidth, window.innerHeight);
   }
 }
-
 class Dot {
   // 创造点
   constructor(OPTION) {

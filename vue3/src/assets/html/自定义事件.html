@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .box {
+        width: 100px;
+        height: 100px;
+        background-color: skyblue;
+    }
+    .box2{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 150px;
+        height: 150px;
+        background-color: red;
+    }
+</style>
+
+<body>
+    <div class="box">
+        <div class="box2">
+        </div>
+    </div>
+</body>
+<script>
+    const box = document.getElementsByClassName('box')[0];
+    const myEvent = new CustomEvent('myevent', {
+        bubbles: true,
+        detail: {
+            index: Math.random() * 10
+        }
+    });
+    box.addEventListener('myevent', (e) => {
+        console.log(e);
+    })
+
+    box.addEventListener('click', throttle((e) => {
+        if (e.type === 'click') {
+            fn();
+        }
+    }, 1000))
+
+    function fn() {
+        box.dispatchEvent(myEvent);
+    }
+
+    function throttle(fn, ms = 1000) {
+        let throttleTimer = null;
+        return function (...args) {
+            // console.log(args)
+            if (!throttleTimer) {
+                // const ret = fn.apply(this, args);
+                throttleTimer = setTimeout(() => {
+                    throttleTimer = null;
+                }, ms);
+                return fn.apply(this, args);
+            }
+        };
+    }
+</script>
+
+</html>

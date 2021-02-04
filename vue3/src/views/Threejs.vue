@@ -3,7 +3,8 @@
     threejs
     <!-- <div v-lazyimg:xxx="require('../assets/img/success.png')">
       <img src="">
-    </div>-->
+    </div>-->'
+    <img src="../assets/logo.png" alt="">
   </div>
 </template>
 
@@ -20,11 +21,11 @@ function initThreejs(params) {
   // const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 100);
   // camera.position.set(5, 2, 8);
   // debugger
-  const loader = new GLTFLoader().setPath('assets/3Dmodule/');
+  const loader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath('assets/js/draco/gltf/');
+  dracoLoader.setDecoderPath('/assets/js/draco/');
   loader.setDRACOLoader(dracoLoader);
-  loader.load('LittlestTokyo.glb', (gltf) => {
+  loader.load('/assets/3Dmodule/3-d.gltf', (gltf) => {
     const model = gltf.scene;
     scene.add( model );
     // model.position.set(1, 1, 0);
