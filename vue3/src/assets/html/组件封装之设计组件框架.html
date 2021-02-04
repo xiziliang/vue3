@@ -233,7 +233,7 @@
             const buttons = container.querySelectorAll(
                 '.slider__control-buttons, .slider__control-buttons--selected');
             container.addEventListener('mouseover', (evt) => {
-                const idx = Array.from(buttons).indexOf(evt.target); // Array.from 将类数组对象转为数组
+                const idx = [...buttons].indexOf(evt.target); // Array.from 将类数组对象转为数组
                 if (idx >= 0) {
                     parent.slideTo(idx);
                     parent.stop();
