@@ -158,6 +158,7 @@
             images = [],
             cycle = 3000
         } = {}) {
+            console.log(images);
             super({
                 container,
                 data: images
@@ -263,10 +264,12 @@
     class SliderPrevious extends Component {
         constructor({
             container,
+            data,
             parent
         }) {
             super({
                 container,
+                data
             });
             const previous = container.querySelector('.slider__previous');
             previous.addEventListener('click', (evt) => {
@@ -284,10 +287,12 @@
     class SliderNext extends Component {
         constructor({
             container,
+            data,
             parent
         }) {
             super({
                 container,
+                data
             });
             const previous = container.querySelector('.slider__next');
             previous.addEventListener('click', (evt) => {
@@ -302,7 +307,8 @@
         }
     }
 
-    const images = ['https://p5.ssl.qhimg.com/t0119c74624763dd070.png',
+    const images = [
+        'https://p5.ssl.qhimg.com/t0119c74624763dd070.png',
         'https://p4.ssl.qhimg.com/t01adbe3351db853eb3.jpg',
         'https://p2.ssl.qhimg.com/t01645cd5ba0c3b60cb.jpg',
         'https://p4.ssl.qhimg.com/t01331ac159b58f5478.jpg'

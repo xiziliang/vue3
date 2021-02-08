@@ -21,6 +21,8 @@ export default {
 </script>
 <style scoped>
 a {
+  height: 0.3rem;
+  font-size: .2rem;
   display: block;
   margin-top: 20px;
   text-decoration: none;

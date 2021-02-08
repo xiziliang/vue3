@@ -85,7 +85,7 @@
         renderer.render();
         function update(t){
             renderer.uniforms.uTime = t/1000;
-            let fn = requestAnimationFrame(update);
+            let fn = requestAnimationFrame(update); //requestAnimationFrame callback的入参 performance.now()
             console.log(t)
             if(t > 6800){
                 cancelAnimationFrame(fn);

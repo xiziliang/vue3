@@ -30,14 +30,14 @@
    class Children extends Person{
        constructor({name,age,address}){
            super({name,age}); // 只能继承父拥有的属性
-        //    this.address = address;
+           this.address = address;
        }
        geInfo(){
            return `我是${this.name}他爸！`
        }
    }
  let person1 = new Person({name:'小明',age:19})
- let person2 = new Children({name:'小花',age:19})
+ let person2 = new Children({name:'小花',age:19,address:123})
  console.log(person1.geInfo())
  console.log(person2)
 </script>

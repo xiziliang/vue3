@@ -5,6 +5,7 @@ import store from './store'
 import  TeleportModal from "./components/Teleport.vue"
 import { AsyncComp } from './utils/asyncomp'
 import directive from './utils/directive'
+import "./assets/js/flexible/index.js"
 let app = createApp(App);
 directive(app);
 app.component('TeleportModal',TeleportModal);
