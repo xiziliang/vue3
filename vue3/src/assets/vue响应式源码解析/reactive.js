@@ -28,12 +28,11 @@ export function reactive(target) {
       //   if (typeof target[key] === "object") {
       //     return reactive(target[key]); // 递归
       //   }
-      const res = Reflect.set(target, key, value, receiver);
+      const res = Reflect.get(target, key, receiver);
       track(target, key);
     },
   });
 }
-
 // {
 //     //map
 //     {name:'xl',age12}:{

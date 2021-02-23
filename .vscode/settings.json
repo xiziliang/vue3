@@ -1,5 +1,7 @@
 {
   "files.associations": {
     "*.vue": "vue"
-  }
+  },
+  "volar.tsPlugin": false,
+  "volar.tsPluginStatus": false
 }

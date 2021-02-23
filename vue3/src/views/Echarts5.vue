@@ -19,7 +19,6 @@ export default {
     CustomComp
   },
   setup(prop, ctx) {
-
     return {
     }
   },

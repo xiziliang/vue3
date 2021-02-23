@@ -10,7 +10,8 @@ export default {
   setup(props, context) {
     onMounted(() => {
       const chartDom = document.getElementsByClassName('box2')[0];
-      const myChart = echarts.init(chartDom);
+      //useDirtyRect 开启脏矩形
+      const myChart = echarts.init(chartDom,null,{useDirtyRect:true});
       Eoption.option && myChart.setOption(Eoption.option)
       Tool.resize(myChart);
     })

@@ -4,7 +4,7 @@
 <script>
 import { ref, reactive, onMounted,getCurrentInstance} from 'vue';
 import * as Eoption from '../../utils/echartsOption';
-import * as Tool from '../../utils/api'
+import * as Tool from '../../utils/api';
 
 function fetchData(cb) {
   // 通过 setTimeout 模拟异步加载
