@@ -11,42 +11,96 @@
 
 </body>
 <script>
+    // 一、第一个故事
     //使用 Object.defineProperty 随机值 做私有变量
-    const _foo = `_${Math.random().toString(36).slice(2, 10)}`;
-    //Object.defineProperty 会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象
-    class Foo {
-        constructor() {
-            Object.defineProperty(this, _foo, {
-                value: 10,
-                enumerable: false, // 是否可以在 for...in 循环和 Object.keys() 中被枚举。
-                writable: false, // 不可写
-                configurable: true, // 对象的属性是否可以被删除
-            })
-        }
-        bar() {
-            console.log(`Private foo is ${this[_foo]}`);
-        }
-    }
-    const foo = new Foo();
-    foo.bar(); //Private foo is 10
+    // const _foo = `_${Math.random().toString(36).slice(2, 10)}`;
+    // //Object.defineProperty 会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象
+    // class Foo {
+    //     constructor() {
+    //         Object.defineProperty(this, _foo, {
+    //             value: 10,
+    //             enumerable: false, // 是否可以在 for...in 循环和 Object.keys() 中被枚举。
+    //             writable: false, // 不可写
+    //             configurable: true, // 对象的属性是否可以被删除
+    //         })
+    //     }
+    //     bar() {
+    //         console.log(`Private foo is ${this[_foo]}`);
+    //     }
+    // }
+    // const foo = new Foo();
+    // foo.bar(); //Private foo is 10
 
     //使用 Symbol 做私有变量
     // es6 属性名表达式
-    const _foo2 = Symbol('foo');
-    class Foo2 {
-        constructor() {
-                this.p = 2;
-            }
-            [_foo2]() {
-                return 10 * this.p;
-            }
-        bar() {
-            console.log(`Private foo is ${this[_foo2]()}`);
+    // const _foo2 = Symbol('foo');
+    // class Foo2 {
+    //     constructor() {
+    //             this.p = 2;
+    //         }
+    //         [_foo2]() {
+    //             return 10 * this.p;
+    //         }
+    //     bar() {
+    //         console.log(`Private foo is ${this[_foo2]()}`);
+    //     }
+    // }
+
+    // const foo2 = new Foo2();
+    // foo2.bar(); //Private foo is 20
+    // 二、第二个故事 使用代理Proxy
+    // let handler = {
+    //     get: function (target, name) {
+    //         if (name in target) {
+    //             return target[name];
+    //         }
+    //         throw new Error('invalid property');
+    //     }
+    // };
+
+    // function Base() {} // 定义一个Base类
+    // // Proxy不能直接继承,所以需要通过改变函数base的原型,这种方法来实现。
+    // Base.prototype = new Proxy({}, handler);
+
+    // class Foo extends Base {
+    //     constructor() {
+    //         super();
+    //         this.a = 1;
+    //         this.b = 2;
+    //     }
+    // }
+
+    // const foo = new Foo();
+    // console.log(foo.a, foo.b); // 1, 2
+    // console.log(foo.c); // Error: invalid property
+
+    //三、第三个故事 使用proxy设置拦截不存在属性的特性。
+    function watch(obj, onchange) {
+        /*
+          这个代理对象表示拦截persion对象的属性赋值操作，在属性赋值操作后，都执行一次onchange方法。这样就无需派发消息的中间人，但又实现了数据驱动UI的效果。
+        */
+        return new Proxy(obj, {
+            set(target, name, value) {
+                Reflect.set(target, name, value); // 调用person对象的原始操作(即，属性赋值操作)
+                onchange(target, {
+                    [name]: value
+                });
+                return true; // 表示成功
+            },
+        });
+    }
+    let handle = {
+        has: function (target, key,value) {
+            console.log(target, key,value)
+            const arr = Object.prototype.hasOwnProperty.call(target,key);
+            return arr;
+            
         }
     }
-
-    const foo2 = new Foo2();
-    foo2.bar(); //Private foo is 20
+    let p = new Proxy({a:1,b:2,c:3},handle);
+    console.log('d' in p)
+  
+    //四、第四个故事 我们把改变或扩展编程语言语义的行为，叫做元编程(Meta-Programming)
 </script>
 
 </html>

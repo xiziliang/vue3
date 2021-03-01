@@ -1,66 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    
+
 </body>
 <script>
-    Function.prototype.myCall = function(context){
-        if(typeof this !== 'function'){
-            throw new TypeError('Error');
-        }
-        context = context || window;
-        context.fn = this;
-        console.log(arguments)
-        const args = [...arguments].slice(1);
-        const result = context.fn(...args);
-        delete context.fn
-        return result
+    Function.prototype.myCall = function (context,...params) {
+        // this(self)->fn  context->obj  params->[10,20]
+        //如果不传参或者传入null/undefined，非严格模式下为window（不考虑严格模式）
+        context = context == null ? window : context;
+        //如果传入的context不是对象（原始值类型无法设置属性，虽然设置了也不报错，但是访问时就是undefined）
+        //new constext.constructor(context) 此方式可以创建一个对应类型的对象，但是对symbol不友好（symbol不能new）
+        if (!/^(object|function)$/i.test(typeof context)) context = Object(context);
+        let self = this,
+            key = Symbol('KEY'),
+            result;
+        //symbol是唯一的，这样可以避免覆盖原对象中同名属性值
+        context[key] = self;
+        result = context[key](...params);
+        delete context[key];
+        return result;
     }
-    Function.prototype.myApply = function(context){
-        if(typeof this !== 'function'){
+    Function.prototype.myApply = function (context) {
+        if (typeof this !== 'function') {
             throw new TypeError('Error');
         }
         context = context || window;
         context.fn = this;
-        if(arguments.length <= 2 ){
-            if(arguments[1] instanceof Array){
+        if (arguments.length <= 2) {
+            if (arguments[1] instanceof Array) {
                 const args = arguments[1];
                 const result = context.fn(...args);
                 delete context.fn
                 return result
             }
-        }else{
+        } else {
             throw new TypeError('参数不对');
         }
     }
-    Function.prototype.myBind = function(context){
-        if(typeof this !== 'function'){
+    Function.prototype.myBind = function (context,...params) {
+        if (typeof this !== 'function') {
             throw new TypeError('Error');
         }
         context = context || window;
-        const _this = this;
-        const args = [...arguments].slice(1); // [[]]
-        return function F() {
-            if(this instanceof F){
-                debugger
-                return new _this(...args, ...arguments); 
+        const _this = this; //_this => fn
+                            //this => function F
+        return function F(...arr) {
+            if (this instanceof F) {
+                return new _this(...params, ...arr);
             }
-            // console.log(...args.concat(...arguments))
-            return _this.apply(context, args.concat(...arguments))
+            return _this.apply(context, params.concat(arr))
         }
     }
-    function add (arr,a,b,c){
-        console.log(arr,a,b,c)
+
+    function add(arr, a, b, c) {
+        console.log(arr, a, b, c)
         console.log(arguments)
     }
-    add.myCall(this,[1,2,3],2);
+    // add.myCall(this, [1, 2, 3], 2);
     // add.myApply(this,[1,2,3]);
-    // const addfn = add.myBind(this,[1,2,3]);
-    // new addfn();
+    const addfn = add.myBind(this,[1,2,3]);
+    new addfn();
 </script>
+
 </html>
