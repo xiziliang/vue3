@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import * as types from "./action-type";
 import * as api from "../api/index";
+//es6 属性名表达式 可以是个变量也可是字符串
 export default createStore({
   state: {
     planlist: [],
