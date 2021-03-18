@@ -1,11 +1,16 @@
 <template>
   <div id="Threejs">
-    threejs
     <!-- <div v-lazyimg:xxx="require('../assets/img/success.png')">
       <img src="">
-    </div>-->'
-    <img src="../assets/logo.png" alt="">
+    </div>-->
+    <!-- <div class="container" @click="handle1(event)">
+      <div class="content1" @click="handle2(event)">
+        <button class="content2" @click="handle3(event)"></button>
+      </div>
+    </div> -->
+    123
   </div>
+  <div class="xx">456</div>
 </template>
 
 <script>
@@ -27,7 +32,7 @@ function initThreejs(params) {
   loader.setDRACOLoader(dracoLoader);
   loader.load('/assets/3Dmodule/3-d.gltf', (gltf) => {
     const model = gltf.scene;
-    scene.add( model );
+    scene.add(model);
     // model.position.set(1, 1, 0);
     // model.scale.set(0.01, 0.01, 0.01);
     // model.traverse((child) => {
@@ -44,25 +49,52 @@ export default {
   name: "Threejs",
   setup(prop, ctx) {
     const data = ref(1);
+    const handle1 = (e) =>{
+      console.log('container')
+    }
+    const handle2 = (e) =>{
+      console.log('content1')
+    }
+    const handle3 = (e) =>{
+      console.log('content2')
+    }
     onMounted(() => {
-      initThreejs(data);
+      // initThreejs(data);
     })
     return {
       data,
+      handle1,
+      handle2,
+      handle3,
     }
   },
 };
 </script>
-<style scoped>
-.Sprite {
-  padding-top: 100vh;
-}
-img {
+<style scoped lang="less">
+// .Sprite {
+//   padding-top: 100vh;
+// }
+// img {
+//   width: 500px;
+//   height: 400px;
+// }
+// #demo {
+//   width: 100%;
+//   height: 500px;
+// }
+.container {
   width: 500px;
-  height: 400px;
-}
-#demo {
-  width: 100%;
   height: 500px;
+  background-color: #ccc;
+  .content1 {
+    width: 300px;
+    height: 300px;
+    background-color: red;
+    .content2 {
+      width: 200px;
+      height: 200px;
+      background-color: skyblue;
+    }
+  }
 }
 </style>

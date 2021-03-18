@@ -99,8 +99,11 @@
     }
     let p = new Proxy({a:1,b:2,c:3},handle);
     console.log('d' in p)
+    
   
     //四、第四个故事 我们把改变或扩展编程语言语义的行为，叫做元编程(Meta-Programming)
+    //  Object.freeze() 和 Object.seal() 一旦使用，则不能再还原成正常的对象。
+    
 </script>
 
 </html>

@@ -156,9 +156,10 @@
         constructor({
             container,
             images = [],
+            parent,
             cycle = 3000
         } = {}) {
-            console.log(images);
+            console.log('parent',images,parent);
             super({
                 container,
                 data: images
@@ -317,7 +318,8 @@
     const container = document.querySelector('.slider');
     const slider = new Slider({
         container,
-        images
+        images,
+        parent:null
     });
     slider.registerSubComponents(SliderController,SliderPrevious,SliderNext);
     slider.start();

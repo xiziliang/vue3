@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+<div id = "app"></div>
+</body>
+<script src="../vue响应式源码解析/reactivity.global.js"></script>
+<script src="../vue响应式源码解析/effect.js">
+    let {reactive} = VueReactivity;
+    let {effect} = effectApi;
+    const state = reactive({name:'小明',age:12});
+
+    effect(()=>{
+        app.innerHTML ='姓名:'+ state.name + '年龄:'+ state.age;
+    })
+    setTimeout(()=>{
+        state.name = '仇总';
+    },1000)
+</script>
+
+</html>

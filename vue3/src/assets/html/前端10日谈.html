@@ -83,7 +83,7 @@
             if (replacer) {
                 return replacer.apply(this, args);
             }
-        };
+        }; 
     }
 
     // const obj = {
@@ -214,7 +214,6 @@ Please use the ${newApi} instead.`;
     }) {
         return function (...args) {
             console.log('intercept', args)
-            debugger
             if (!beforeCall || beforeCall.call(this, args) !== false) { // 可以通过 beforeCall  return false 组阻止fn执行
                 // 如果beforeCall返回false，不执行后续函数
                 console.log(args)
@@ -307,6 +306,31 @@ Please use the ${newApi} instead.`;
     const cacl = pipe(double, pow2, half);
     const result = cacl(10); // (10 * 2) ** 2 / 2 = 200
     //--------高阶函数的范式---------end----------
+
+
+    // function myDemo(fn,ms) {
+    //     let timer = null;
+    //     return function (...args) {
+    //         if(!timer){
+    //             timer = setTimeout(()=>{
+    //                 timer = null;       
+    //             },ms)
+    //             return fn.call(this,...args)
+    //         }
+    //     }
+    // }
+    // function myDemo2(fn,ms) {
+    //     let timer = null;
+    //     return function (...args) {
+    //         if(timer) {
+    //             clearTimeout(timer);
+    //         }
+    //         timer = setTimeout(()=>{
+    //             fn.apply(this,args);
+    //         },ms)
+    //     }
+        
+    // }
 </script>
 
 </html>
