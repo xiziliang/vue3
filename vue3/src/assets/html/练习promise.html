@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+</body>
+<script>
+    // test1 
+    // Promise.resolve(1).then((res) => {
+    //     console.log(res)
+    //     console.log("then")
+    //     return 100
+    // }).then((res) => {
+    //     console.log(res)
+    //     console.log("then")
+    // }).catch((error) => {
+    //     console.log(error)
+    //     console.log("catch")
+    // })
+
+    // test2
+    // const promise = new Promise((resolve, reject) => {
+    //     console.log(1)
+    //     resolve()
+    //     console.log(2)
+    // })
+    // promise.then(() => {
+    //     console.log(3)
+    // })
+    // console.log(4)
+
+    // test3
+    // const promise1 = new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //         resolve('success')
+    //         console.log(1)
+    //     }, 1000)
+    // })
+    // const promise2 = promise1.then(() => {
+    //     throw new Error('error!!!')
+    // })
+
+    // console.log('promise1', promise1)
+    // console.log('promise2', promise2)
+
+    // setTimeout(() => {
+    //     console.log(2)
+    //     console.log('promise1', promise1)
+    //     console.log('promise2', promise2)
+    // }, 2000)
+
+    // test 4
+    // setTimeout(() => console.log(5), 0);
+    // new Promise(resolve => {
+    //     console.log(1);
+    //     resolve(3);
+    //     Promise.resolve().then(() => console.log(4))
+    // }).then(num => {
+    //     console.log(num)
+    // });
+    // console.log(2);  // 1 2 4 3 5
+
+    // test 5 
+    // const promise = new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //         console.log('once')
+    //         resolve('success')
+    //     }, 1000)
+    // })
+    // const start = Date.now()
+    // promise.then((res) => {
+    //     console.log(res, Date.now() - start)
+    // })
+    // promise.then((res) => {
+    //     console.log(res, Date.now() - start)
+    // })
+
+    // test 6
+    // Promise.resolve()
+    //     .then(() => {
+    //         return new Error('error!!!')
+    //     })
+    //     .then((res) => {
+    //         console.log('then: ', res)
+    //     })
+    //     .catch((err) => {
+    //         console.log('catch: ', err)
+    //     })
+    //     .finally(()=>{
+    //         console.log('end')
+    //     })
+
+    // test 7
+    // const promise = Promise.resolve()
+    //     .then(() => {
+    //         return promise
+    //     })
+    // promise.catch(console.error)
+
+    // test 8
+    // Promise.resolve(1)
+    //     .then(2)
+    //     .then(Promise.resolve(3))
+    //     .then(console.log)
+    let arr = ['1','2','3'].map(parseInt); // '1' 0 
+    console.log(parseInt('1', 0))
+    console.log(parseInt('2', 1))
+    console.log(parseInt('3', 2))
+    console.log(parseInt('4', 3))
+    console.log(parseInt('5', 4))
+    console.log(parseInt('6', 5))
+    console.log(parseInt('7', 6))
+</script>
+
+</html>
