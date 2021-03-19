@@ -13,7 +13,7 @@
 import HelloWorld from "@/components/HelloWorld.vue";
 import Plan from "../components/Plan";
 import Canvas from "../components/Canvas";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 export default {
   name: "CanvasHome",
   components: {

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { onMounted, reactive, toRefs, watch } from "vue";
+import { onMounted, reactive, toRefs, watch, computed } from "vue";
 import { useStore } from "vuex";
 import * as type from "../store/action-type";
 export default {

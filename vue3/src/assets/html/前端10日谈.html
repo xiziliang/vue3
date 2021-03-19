@@ -1,89 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<style>
+  </head>
+  <style>
     #modeBtn::after {
-        content: '🌞';
+      content: "🌞";
     }
 
     body.night #modeBtn::after {
-        content: '🌜';
+      content: "🌜";
     }
 
     #panel {
-        display: inline-block;
-        width: 360px;
-        height: 360px;
-        background: hsl(0, 50%, 50%);
+      display: inline-block;
+      width: 360px;
+      height: 360px;
+      background: hsl(0, 50%, 50%);
     }
 
     #panel2 {
-        width: 100%;
-        height: 0;
-        padding-bottom: 100%;
+      width: 100%;
+      height: 0;
+      padding-bottom: 100%;
     }
-</style>
+  </style>
 
-<body>
+  <body>
     <header>
-        header (Click here)
+      header (Click here)
     </header>
     <main>
-        <button id="modeBtn" class="">
-            Main (MouseOver)
-        </button>
+      <button id="modeBtn" class="">
+        Main (MouseOver)
+      </button>
     </main>
     <footer>
-        footer (Click here)
+      footer (Click here)
     </footer>
     <div id="panel"></div>
     <div id="panel2">
-        <canvas></canvas>
+      <canvas></canvas>
     </div>
-</body>
-<script>
+  </body>
+  <script>
     // ------ 代码的封装以及正确性 -----start-------
     function* shuffle(items) {
-        items = [...items];
-        for (let i = items.length; i > 0; i--) {
-            const idx = Math.floor(Math.random() * i);
-            [items[idx], items[i - 1]] = [items[i - 1], items[idx]]; // items[idx]和items[i - 1]做一个交换，不需要第三个元素
-            console.log([items[idx], items[i - 1]]);
-            yield items[i - 1];
-        }
+      items = [...items];
+      for (let i = items.length; i > 0; i--) {
+        const idx = Math.floor(Math.random() * i);
+        [items[idx], items[i - 1]] = [items[i - 1], items[idx]]; // items[idx]和items[i - 1]做一个交换，不需要第三个元素
+        console.log([items[idx], items[i - 1]]);
+        yield items[i - 1];
+      }
     }
 
     let items = [...new Array(100).keys()];
 
     let n = 1;
     // 100个号随机抽取5个
-    for (let item of shuffle(items)) { // Generator 函数可以通过for of  遍历，有多少yield遍历多少次
-        console.log(item);
-        if (n++ >= 5) break;
+    for (let item of shuffle(items)) {
+      // Generator 函数可以通过for of  遍历，有多少yield遍历多少次
+      console.log(item);
+      if (n++ >= 5) break;
     }
     // ------ 代码的封装以及正确性 -----end-------
 
     //---------过程抽象 --------start------------
     function once(fn, replacer = null) {
-        /** 高阶函数中第一个返回的函数的入参来源
-         * @param args //参数是return的函数进行的入参，fn 和 replacer的入参不在args中，但是return的函数进行的入参可以在fn 和 replacer中进行读取,是因为 ret = fn.apply(this, args);
-         */
-        return function (...args) {
-            if (fn) {
-                console.log(args, this)
-                const ret = fn.apply(this, args);
-                fn = null;
-                return ret;
-            }
-            if (replacer) {
-                return replacer.apply(this, args);
-            }
-        };
+      /** 高阶函数中第一个返回的函数的入参来源
+       * @param args //参数是return的函数进行的入参，fn 和 replacer的入参不在args中，但是return的函数进行的入参可以在fn 和 replacer中进行读取,是因为 ret = fn.apply(this, args);
+       */
+      return function(...args) {
+        if (fn) {
+          console.log(args, this);
+          const ret = fn.apply(this, args);
+          fn = null;
+          return ret;
+        }
+        if (replacer) {
+          return replacer.apply(this, args);
+        }
+      };
     }
 
     // const obj = {
@@ -97,82 +97,86 @@
     // obj.init(1,1,3,3);
     // obj.init();
     const fn = (...a) => {
-        console.log(a)
-    }
+      console.log(a);
+    };
     const error = (...b) => {
-        console.log('error', b)
-    }
+      console.log("error", b);
+    };
     const res = once(fn, error);
-    res('a', 'b');
+    res("a", "b");
     res(3, 2, 1);
     //---------过程抽象 --------end------------
 
     //---------防抖节流--------start----------
     // first 节流装饰器
-    const panel = document.getElementById('panel');
-    panel.addEventListener('mousemove', throttle((e) => {
-        const {
-            x,
-            y
-        } = e;
+    const panel = document.getElementById("panel");
+    panel.addEventListener(
+      "mousemove",
+      throttle((e) => {
+        const { x, y } = e;
         e.target.style.background = `linear-gradient(${y}deg, 
     hsl(0, 50%, 50%),
     hsl(${0.5 * x}, 50%, 50%))`;
-    }, 1000));
+      }, 1000)
+    );
 
     function throttle(fn, ms = 1000) {
-        let throttleTimer = null;
-        return function (...args) {
-            console.log(args)
-            if (!throttleTimer) {
-                // const ret = fn.apply(this, args);
-                throttleTimer = setTimeout(() => {
-                    throttleTimer = null;
-                }, ms);
-                return fn.apply(this, args);
-            }
-        };
+      let throttleTimer = null;
+      return function(...args) {
+        // console.log(args);
+        if (!throttleTimer) {
+          // const ret = fn.apply(this, args);
+          throttleTimer = setTimeout(() => {
+            throttleTimer = null;
+          }, ms);
+          console.log("throttle", this);
+          return fn.apply(this, args);
+        }
+      };
     }
     // second 防抖装饰器
-    const panel2 = document.getElementById('panel2');
-    const canvas = document.querySelector('canvas');
+    const panel2 = document.getElementById("panel2");
+    const canvas = document.querySelector("canvas");
 
     function resize() {
-        canvas.width = panel2.clientWidth;
-        canvas.height = panel2.clientHeight;
+      canvas.width = panel2.clientWidth;
+      canvas.height = panel2.clientHeight;
     }
 
     function draw() {
-        const context = canvas.getContext('2d');
-        const radius = canvas.width / 2;
-        context.save();
-        context.translate(radius, radius);
-        for (let i = radius; i >= 0; i -= 5) {
-            context.fillStyle = `hsl(${i % 360}, 50%, 50%)`;
-            context.beginPath();
-            context.arc(0, 0, i, i, 0, Math.PI * 2);
-            context.fill();
-        }
-        context.restore();
+      const context = canvas.getContext("2d");
+      const radius = canvas.width / 2;
+      context.save();
+      context.translate(radius, radius);
+      for (let i = radius; i >= 0; i -= 5) {
+        context.fillStyle = `hsl(${i % 360}, 50%, 50%)`;
+        context.beginPath();
+        context.arc(0, 0, i, i, 0, Math.PI * 2);
+        context.fill();
+      }
+      context.restore();
     }
 
     resize();
     draw();
 
     let debounceTimer = null;
-    window.addEventListener('resize', debounce(() => {
+    window.addEventListener(
+      "resize",
+      debounce(() => {
         resize();
         draw();
-    }, 500));
+      }, 500)
+    );
 
     function debounce(fn, ms) {
-        let debounceTimer = null;
-        return function (...args) {
-            if (debounceTimer) clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
-                fn.apply(this, args);
-            }, ms);
-        };
+      let debounceTimer = null;
+      return function(...args) {
+        if (debounceTimer) clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          fn.apply(this, args);
+        }, ms);
+      };
     }
     //---------防抖节流--------end----------
 
@@ -194,35 +198,33 @@
     // ----------------------------------------------
     // 函数拦截器 deprecate
     function deprecate(fn, oldApi, newApi) {
-        const message = `The ${oldApi} is deprecated.
+      const message = `The ${oldApi} is deprecated.
 Please use the ${newApi} instead.`;
-        const notice = once(console.warn);
+      const notice = once(console.warn);
 
-        return function (...args) {
-            notice(message);
-            fn.apply(this, args);
-        }
+      return function(...args) {
+        notice(message);
+        fn.apply(this, args);
+      };
     }
     // ----------------------------------------------
-    // apply call bind 
+    // apply call bind
     // 执行区别：fn.apply，fn.call 返回的是fn执行完的结果， fn.bind 返回的未执行的fn函数，只是改变了内部的this指向
     // 传参区别: fn.apply(this,arr) apply如果传的是数组，fn接收的是将arr拆开后传过来的值，call如果传的是数组，fn接收的是将arr这个数组。bind也一样是接收arr这个数组。
     // 函数拦截器 intercept
-    function intercept(fn, {
-        beforeCall = null,
-        afterCall = null
-    }) {
-        return function (...args) {
-            console.log('intercept', args)
-            debugger
-            if (!beforeCall || beforeCall.call(this, args) !== false) { // 可以通过 beforeCall  return false 组阻止fn执行
-                // 如果beforeCall返回false，不执行后续函数
-                console.log(args)
-                const ret = fn.apply(this, args);
-                if (afterCall) return afterCall.call(this, ret);
-                return ret;
-            }
-        };
+    function intercept(fn, { beforeCall = null, afterCall = null }) {
+      return function(...args) {
+        console.log("intercept", args);
+        debugger;
+        if (!beforeCall || beforeCall.call(this, args) !== false) {
+          // 可以通过 beforeCall  return false 组阻止fn执行
+          // 如果beforeCall返回false，不执行后续函数
+          console.log(args);
+          const ret = fn.apply(this, args);
+          if (afterCall) return afterCall.call(this, ret);
+          return ret;
+        }
+      };
     }
 
     // function sum(list) {
@@ -246,13 +248,13 @@ Please use the ${newApi} instead.`;
     //     return setTimeout(fn,ms)
     // }
     const mySetTimeout = intercept(setTimeout, {
-        beforeCall(args) {
-            [args[0], args[1]] = [args[1], args[0]];
-        }
+      beforeCall(args) {
+        [args[0], args[1]] = [args[1], args[0]];
+      },
     });
 
     mySetTimeout(1000, () => {
-        console.log('done');
+      console.log("done");
     });
     //---------函数拦截器-------end-------------
 
@@ -260,44 +262,43 @@ Please use the ${newApi} instead.`;
 
     // 多写纯函数
     function batch(fn) {
-        return function (subject, ...args) { // ...args = [xxx,xx,x]
-            if (Array.isArray(subject)) {
-                return subject.map((item) => {
-                    return fn.call(this, item, ...args) // ...args == 展开数组 args
-                })
-            }
-            return fn.call(this, subject, ...args);
+      return function(subject, ...args) {
+        // ...args = [xxx,xx,x]
+        if (Array.isArray(subject)) {
+          return subject.map((item) => {
+            return fn.call(this, item, ...args); // ...args == 展开数组 args
+          });
         }
+        return fn.call(this, subject, ...args);
+      };
     }
 
-
     //-----函数的纯度、可测试性和可维护性----end--------
-
 
     //--------高阶函数的范式---------start----------
     // 高阶函数的等阶范式 HOFO
     function HOFO(fn) {
-        return function (...args) {
-            return fn.apply(this, args);
-        }
+      return function(...args) {
+        return fn.apply(this, args);
+      };
     }
 
     // 高阶函数的递归范式 continous
     function continous(fn) {
-        return function (...args) {
-            return args.reduce((a, b) => fn(a, b))
-        }
+      return function(...args) {
+        return args.reduce((a, b) => fn(a, b));
+      };
     }
     const add = continous((a, b) => a + b);
     console.log(add(1, 2, 3, 4)); // 1 + 2 + 3 + 4 = 10
 
     // 高阶函数任意组合范式
     function pipe(...fns) {
-        return function (input) {
-            return fns.reduce((a, b) => {
-                return b.call(this, a);
-            }, input) // input 初始值
-        }
+      return function(input) {
+        return fns.reduce((a, b) => {
+          return b.call(this, a);
+        }, input); // input 初始值
+      };
     }
 
     const double = (x) => x * 2;
@@ -307,6 +308,5 @@ Please use the ${newApi} instead.`;
     const cacl = pipe(double, pow2, half);
     const result = cacl(10); // (10 * 2) ** 2 / 2 = 200
     //--------高阶函数的范式---------end----------
-</script>
-
+  </script>
 </html>
