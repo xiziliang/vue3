@@ -70,20 +70,20 @@
 
     //---------过程抽象 --------start------------
     function once(fn, replacer = null) {
-      /** 高阶函数中第一个返回的函数的入参来源
-       * @param args //参数是return的函数进行的入参，fn 和 replacer的入参不在args中，但是return的函数进行的入参可以在fn 和 replacer中进行读取,是因为 ret = fn.apply(this, args);
-       */
-      return function(...args) {
-        if (fn) {
-          console.log(args, this);
-          const ret = fn.apply(this, args);
-          fn = null;
-          return ret;
-        }
-        if (replacer) {
-          return replacer.apply(this, args);
-        }
-      };
+        /** 高阶函数中第一个返回的函数的入参来源
+         * @param args //参数是return的函数进行的入参，fn 和 replacer的入参不在args中，但是return的函数进行的入参可以在fn 和 replacer中进行读取,是因为 ret = fn.apply(this, args);
+         */
+        return function (...args) {
+            if (fn) {
+                console.log(args, this)
+                const ret = fn.apply(this, args);
+                fn = null;
+                return ret;
+            }
+            if (replacer) {
+                return replacer.apply(this, args);
+            }
+        }; 
     }
 
     // const obj = {
@@ -212,19 +212,20 @@ Please use the ${newApi} instead.`;
     // 执行区别：fn.apply，fn.call 返回的是fn执行完的结果， fn.bind 返回的未执行的fn函数，只是改变了内部的this指向
     // 传参区别: fn.apply(this,arr) apply如果传的是数组，fn接收的是将arr拆开后传过来的值，call如果传的是数组，fn接收的是将arr这个数组。bind也一样是接收arr这个数组。
     // 函数拦截器 intercept
-    function intercept(fn, { beforeCall = null, afterCall = null }) {
-      return function(...args) {
-        console.log("intercept", args);
-        debugger;
-        if (!beforeCall || beforeCall.call(this, args) !== false) {
-          // 可以通过 beforeCall  return false 组阻止fn执行
-          // 如果beforeCall返回false，不执行后续函数
-          console.log(args);
-          const ret = fn.apply(this, args);
-          if (afterCall) return afterCall.call(this, ret);
-          return ret;
-        }
-      };
+    function intercept(fn, {
+        beforeCall = null,
+        afterCall = null
+    }) {
+        return function (...args) {
+            console.log('intercept', args)
+            if (!beforeCall || beforeCall.call(this, args) !== false) { // 可以通过 beforeCall  return false 组阻止fn执行
+                // 如果beforeCall返回false，不执行后续函数
+                console.log(args)
+                const ret = fn.apply(this, args);
+                if (afterCall) return afterCall.call(this, ret);
+                return ret;
+            }
+        };
     }
 
     // function sum(list) {
@@ -308,5 +309,31 @@ Please use the ${newApi} instead.`;
     const cacl = pipe(double, pow2, half);
     const result = cacl(10); // (10 * 2) ** 2 / 2 = 200
     //--------高阶函数的范式---------end----------
-  </script>
+
+
+    // function myDemo(fn,ms) {
+    //     let timer = null;
+    //     return function (...args) {
+    //         if(!timer){
+    //             timer = setTimeout(()=>{
+    //                 timer = null;       
+    //             },ms)
+    //             return fn.call(this,...args)
+    //         }
+    //     }
+    // }
+    // function myDemo2(fn,ms) {
+    //     let timer = null;
+    //     return function (...args) {
+    //         if(timer) {
+    //             clearTimeout(timer);
+    //         }
+    //         timer = setTimeout(()=>{
+    //             fn.apply(this,args);
+    //         },ms)
+    //     }
+        
+    // }
+</script>
+
 </html>

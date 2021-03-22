@@ -1,5 +1,5 @@
 <template>
-  <div class="susAndTemp">susAndTemp</div>
+  <div  class="susAndTemp">susAndTemp</div>
   <div v-if="error">{{error}}</div>
   <Suspense v-else>
     <template #default>
