@@ -19,8 +19,10 @@
         console.log(b)
     })()
 
-    console.log(c)
-
+    let obj = {name:"zf"}
+    let ccc = Object.freeze(obj);
+    obj.age = 12;
+    console.log(ccc,obj)
     // function c(){
     //     b = 20;
     //     console.log(b)
