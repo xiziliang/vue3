@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    
-</body>
-<script>
+  </head>
+  <body></body>
+  <script>
     // debugger
-    var b = 10;
-    (function c(){
-        "use strict";
-        // console.log(b)
-        b = 20;
-        console.log(b)
-    })()
+    // var b = 10;
+    // (function c(){
+    //     "use strict";
+    //     // console.log(b)
+    //     b = 20;
+    //     console.log(b)
+    // })()
 
-    let obj = {name:"zf"}
-    let ccc = Object.freeze(obj);
-    obj.age = 12;
-    console.log(ccc,obj)
+    // let obj = {name:"zf"}
+    // let ccc = Object.freeze(obj);
+    // obj.age = 12;
+    // console.log(ccc,obj)
     // function c(){
     //     b = 20;
     //     console.log(b)
     // }
     // c();
-</script>
+    const arr = [
+      { name: "Tom", age: 16 },
+      { name: "Aaron", age: 18 },
+      { name: "Denny", age: 20 },
+    ];
+    const result = arr.map((item) => {
+      return { ...item, age: item.age + 2 };
+    });
+    console.log("arr", arr);
+    console.log("result", result);
+  </script>
 </html>

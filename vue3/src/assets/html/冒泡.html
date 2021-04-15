@@ -23,7 +23,7 @@
     }
   </style>
   <body>
-    <div class="container" onclick="handle3(event)">
+    <div class="container" id="container">
       <div class="content1 open" data-data="111" onclick="handle1(event)">
         <div class="content2" onclick="handle2(event)"></div>
       </div>
@@ -34,14 +34,28 @@
     const hasOpen = container.classList.contains("open");
     const hasData = container.getAttribute("data-data");
     const handle2 = (e) => {
-      console.log("content2", e);
+      // console.log("content2", e);
     };
     const handle1 = (e) => {
-      e.stopPropagation();
-      console.log("content1", e);
+      // e.stopPropagation();
+      // console.log("content1", e);
     };
-    const handle3 = (e) => {
-      console.log("container", e);
-    };
+    container.addEventListener("click",(event)=>{
+      console.log(event.target)
+      console.log(event.currentTarget)
+    })
+
+    const arr = [1,2,3]
+    let res = arr.map((item,index)=>{
+      if(item>2){
+        return item;
+      }else{
+        return null;
+      }
+    })
+    console.log(res)
+    // const handle3 = (e) => {
+    //   console.log("container", e);
+    // };
   </script>
 </html>
