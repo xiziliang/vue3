@@ -15,7 +15,7 @@ function fetchData(cb) {
     });
   }, 3000);
 }
-function init() {
+function createEcharts() {
   const chartDom = document.getElementsByClassName("box")[0];
   const myChart = echarts.init(chartDom);
   myChart.setOption(Eoption.asyncOption);
@@ -37,15 +37,17 @@ function init() {
         ],
       });
   });
-  return myChart;
+  Tool.resize(myChart);
+}
+function init() {
+  onMounted(() => {
+    createEcharts();
+  });
 }
 export default {
   name: "asyncComp",
   setup(props, context) {
-    onMounted(() => {
-      const dom = init();
-      Tool.resize(dom);
-    });
+    init();
   },
 };
 </script>
