@@ -12,7 +12,24 @@
 <script lang="ts">
 import { defineComponent, PropType, reactive, toRefs } from "vue";
 import { Select_Types } from "../../type";
-
+function initData({ emit }) {
+  const data = reactive({
+    options: [
+      { text: "全部", value: Select_Types.ALL },
+      { text: "react", value: Select_Types.REACT },
+      { text: "vue", value: Select_Types.VUE },
+      { text: "canvas", value: Select_Types.CANVAS },
+      { text: "D3", value: Select_Types.D3 },
+    ],
+  });
+  const changes = (value: Select_Types) => {
+    emit("changeState", value);
+  };
+  return {
+    changes,
+    data,
+  };
+}
 export default defineComponent({
   name: "header",
   props: {
@@ -22,23 +39,7 @@ export default defineComponent({
   },
   emits: ["changeState"],
   setup(props, context) {
-    const data = reactive({
-      options: [
-        { text: "全部", value: Select_Types.ALL },
-        { text: "react", value: Select_Types.REACT },
-        { text: "vue", value: Select_Types.VUE },
-        { text: "canvas", value: Select_Types.CANVAS },
-        { text: "D3", value: Select_Types.D3 },
-        // { text: "全部", value: 0 },
-        // { text: "react", value: 1 },
-        // { text: "vue", value: 2 },
-        // { text: "canvas", value: 3 },
-        // { text: "D3", value: 4 },
-      ],
-    });
-    const changes = (value: Select_Types) => {
-      context.emit("changeState", value);
-    };
+    const { changes, data } = initData(context);
     return {
       changes,
       ...toRefs(data),

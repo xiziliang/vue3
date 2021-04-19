@@ -33,7 +33,6 @@ export default defineComponent({
   setup() {
     const store = useStore<GlobalState>();
     const { curruntState, changeState } = stateTought(store);
-    console.log(curruntState);
     return { store, curruntState, changeState };
   },
 });
