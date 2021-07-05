@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "vue-cli-service serve",
-    "test": "vue-cli-service build --mode test",
-    "pre": "vue-cli-service build  --mode pre",
-    "build": "vue-cli-service build  --mode production",
-    "lint": "vue-cli-service lint"
+    "dev": "vite --open",
+    "test": "vite build --mode test",
+    "pre": "vite build  --mode pre",
+    "build": "vite build  --mode production",
+    "lint": "vite lint"
   },
   "dependencies": {
+    "@vitejs/plugin-vue": "^1.2.4",
     "core-js": "^3.6.5",
+    "vite": "^2.3.8",
     "vue": "^3.0.0-0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"

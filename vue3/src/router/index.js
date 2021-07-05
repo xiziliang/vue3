@@ -18,7 +18,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory('localhost:3000'), //process?.env.BASE_URL 为啥process没有
   routes
 })
 
