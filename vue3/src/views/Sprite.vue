@@ -1,35 +1,19 @@
 <template>
   <div class="Sprite">
-    sprite {{ val }}
-    <!-- <div v-lazyimg:xxx="require('../assets/img/success.png')">
-      <img src="">
-    </div>-->
+    <D3/>
   </div>
 </template>
 
 <script>
 import { reactive, toRefs, ref, onUpdated, onMounted,onUnmounted, onErrorCaptured } from "vue";
-import { Observable, timer } from 'rxjs'
-import { option } from '../utils/echartsOption.js'
-import GlRenderer from "gl-renderer";
+import D3 from '../components/d3.vue';
 export default {
   name: "Sprite",
+  components: {
+    D3
+  },
   setup(prop, ctx) {
-    const val = ref(0);
-    const time$ = timer(0,2000).subscribe((res)=>{
-      if(val.value === 5){
-        alert('午时已到!')
-        time$.unsubscribe();
-      }
-      console.log(val.value++)
-    })
-    onUnmounted(()=>{
-      time$.unsubscribe();
-    })
-    return {
-      val,
-      time$
-    }
+
   },
 };
 </script>
