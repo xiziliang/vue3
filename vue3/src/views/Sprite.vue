@@ -18,9 +18,6 @@ export default {
 };
 </script>
 <style scoped>
-.Sprite {
-  padding-top: 100vh;
-}
 img {
   width: 500px;
   height: 400px;
@@ -28,5 +25,8 @@ img {
 #demo {
   width: 100%;
   height: 500px;
+}
+.Sprite{
+  padding-top: 50px;
 }
 </style>
