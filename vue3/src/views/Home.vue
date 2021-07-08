@@ -13,7 +13,6 @@ export default {
     name: "home",
   },
   setup(prop) {
-    console.log($(document));
     const arr = reactive([
       "/CanvasHome",
       "/reactive",
@@ -33,7 +32,6 @@ export default {
     router.afterEach((to, from) => {
       console.log(to.fullPath);
     });
-    // console.log(router,route.path)
     return {
       arr,
       router,

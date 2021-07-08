@@ -28,5 +28,6 @@ img {
 }
 .Sprite{
   padding-top: 50px;
+  height: 100%;
 }
 </style>
