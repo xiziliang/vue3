@@ -2,12 +2,13 @@
   <svg width="100%"
        height="500"
        style="background-color:skyblue">
+
   </svg>
 </template>
 <script>
-import { ref, toRefs, reactive, onMounted } from "vue";
+import { ref, toRefs, reactive, onMounted, onUnmounted } from "vue";
 import * as d3 from "d3";
-import d3tip from "d3-tip";
+// import d3tip from "d3-tip";
 const data = {
   name: "Eve",
   children: [
@@ -46,6 +47,8 @@ const data = {
  * 坑1: d3tip添加class,需要在全局css样式中去添加样式.
  *
  * 坑2: 必须要单独放在事件的回调中,和别的事件一起使用位置会错乱
+ *
+ * 3: .data .select .selectAll .enter .exit等等 的return都是Selection类型的值
  */
 function initD3tip() {
   const tips = d3tip()
@@ -130,6 +133,8 @@ function initHierarchy() {
    * d3.hierarchy: {Node} -> 返回的是处理后的根节点的map;是一种NODE类型的对象;
    *
    * {Node} 可以通过遍历的方法对所有的节点进行添加属性;
+   *
+   * treemap只继承了node;
    */
   const treemap = d3.hierarchy(data, (d) => d.children);
   treemap.x0 = 0;
@@ -139,7 +144,7 @@ function initHierarchy() {
     n.y = ++index * 48 + 24;
     n.x = n.depth * 12;
   });
-  console.log(treemap);
+  // console.log(treemap);
   /**descendants：获取所有后代并存放在一个数组中, 返回值仅仅是一个数组*/
   const nodes = treemap.descendants();
 
@@ -153,19 +158,21 @@ function initHierarchy() {
     .style("opacity", 0)
     .attr("class", "trace-node")
     .attr("transform", `translate(${treemap.x0},${treemap.y0})`);
+  console.log(g);
   g.append("text")
     .attr("class", "node-text")
     .attr("x", 35)
     .attr("y", -5)
     .attr("fill", "white")
-    .html(() => {
+    .text((d) => {
       const date = new Date();
+      const format = d3.timeFormat("%c");
       return `
-     ${date.getFullYear()}/${date.getMonth() + 1}/${date.getDay()}
+     ${format(date)}
       `;
     });
   g.append("text")
-    .attr("class", "node-text")
+    .attr("class", "node-text-name")
     .attr("x", 35)
     .attr("y", 16)
     .attr("fill", "white")
@@ -186,6 +193,16 @@ function initHierarchy() {
     .duration(400)
     .attr("transform", (d) => `translate(${d.x},${d.y})`)
     .style("opacity", 1);
+  g.append("circle")
+    .attr("r", 3.5)
+    .attr('cx', 10)
+    .attr("stroke-width", 2.5)
+    .attr("fill", "white")
+    .style('cursor','pointer')
+    .style("stroke", "green")
+    .on('click',(e,{ data })=>{
+      console.log(data.name)
+    })
 
   /**
    * links: 返回的是连接父亲节点和子节点的数组对象;
@@ -193,23 +210,62 @@ function initHierarchy() {
    *        source -> 父亲节点
    *        target -> 孩子节点
    */
-  const links = treemap.links();
+  const linkArr = treemap.links();
+  const link = d3.select("svg").selectAll(".trace-link").data(linkArr);
+  link
+    .enter()
+    .insert("path", "g")
+    .attr("class", "trace-link")
+    .attr("fill", "rgba(0,0,0,0)")
+    .attr("stroke", "rgba(0, 0, 0, 0.1)")
+    .attr("stroke-width", 2)
+    .attr("d", () => {
+      const o = { x: treemap.y0 + 35, y: treemap.x0 };
+      return diagonal({ source: o, target: o });
+    })
+    .transition()
+    .duration(400)
+    .attr("d", diagonal);
+}
+function diagonal(d) {
+  return `M${d.source.x + 10} ${d.source.y + 5}
+    L${d.source.x + 10} ${d.target.y - 30}
+    L${d.target.x + 10} ${d.target.y - 20}
+    L${d.target.x + 10} ${d.target.y - 5}`;
+}
+function updateDate() {
+  const timer = setInterval(() => {
+    d3.selectAll(".node-text").text((d) => {
+      // d 是每一个节点node
+      const date = new Date();
+      const format = d3.timeFormat("%c");
+      return `
+     ${format(date)}
+      `;
+    });
+  }, 1000);
+  return timer;
 }
 
 /**
  * d3.tree: create a new tidy tree layout;
  */
-function initTree() {
-  //   const svg = d3.select("svg");
-}
+function initTree() {}
+
 export default {
   name: "D3",
   setup(prop) {
+    let timer;
     onMounted(() => {
+      initTree();
       initHierarchy();
+      timer = updateDate();
       //   initTree();
       //   initD3();
       //   draw();
+    });
+    onUnmounted(() => {
+      clearInterval(timer);
     });
     return {};
   },
