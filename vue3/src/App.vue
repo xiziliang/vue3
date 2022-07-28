@@ -1,3 +1,8 @@
+<script setup>
+import { ref } from 'vue';
+const data = ref(0);
+
+</script>
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link> |
