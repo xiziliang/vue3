@@ -1,35 +1,19 @@
+<!-- // App.vue -->
 <script setup>
-import { ref } from 'vue';
-const data = ref(0);
-
+import VirtualScroll from './components/virtual-scroll.vue';
+const list = (num = 10)=> new Array(num).fill(null).map((_,i) => ({ id: i+1, name: `第 ${i+1} 条列表` }));
 </script>
+
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view/>
+  <VirtualScroll :data="list(100)" :height="500" :offset="150" #default="{ data }">  
+    <div>
+      <div>listData</div>
+      <div>{{ data.name }}</div>
+      <div>小丑1</div>
+      <div>小丑2</div>
+      <div>小丑3</div>
+      <div>小丑4</div>
+    </div>
+  </VirtualScroll>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
