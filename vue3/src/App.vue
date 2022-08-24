@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import VirtualScroll from './components/virtual-scroll.vue';
+import HelloWorld from './components/helloWorld.vue';
 import { ref, effectScope, computed, getCurrentScope, inject, InjectionKey, provide, onScopeDispose } from 'vue';
-import { useMouse, createGlobalState } from '@vueuse/core';
+import { useMouse, createGlobalState, tryOnScopeDispose } from '@vueuse/core';
 
 
 // NOTE: provide和inject 类型安全问题
@@ -39,7 +40,7 @@ function dispose() {
 }
 
 // NOTE: 当effect不再使用时，销毁副作用
-onScopeDispose(dispose);
+tryOnScopeDispose(dispose);
 
 // TODO:
 // NOTE:
@@ -54,6 +55,8 @@ function onChange(value) {
   }
 }
 
+console.log(getCurrentScope())
+
 // NOTE: 虚拟滚动数据
 const list = (num = 10) => new Array(num).fill(null).map((_, i) => ({ id: i + 1, name: `第 ${i + 1} 条列表` }));
 </script>
@@ -61,6 +64,7 @@ const list = (num = 10) => new Array(num).fill(null).map((_, i) => ({ id: i + 1,
 <template>
   <el-switch v-model="switchModel" type="primary" size="default" @change="onChange"></el-switch>
   {{ state?.x }}
+  <HelloWorld v-if="switchModel"></HelloWorld>
   <VirtualScroll :data="list(1000)" :height="800" :offset="150" #default="{ data }">  
     <div>
       <div>listData</div>
