@@ -8,11 +8,12 @@
 4. startIndex = Math.floor(容器scrollTop/ offset)
 5. 定位元素位置 pos =  startIndex * height
  */
-import { onMounted, ref, defineProps, computed, watchEffect } from "vue";
+import { onMounted, ref, defineProps, computed, watchEffect, watch } from "vue";
 import { ElEmpty } from 'element-plus';
 import { useScroll } from '@vueuse/core';
 
 const props = defineProps({ data: Array, height: Number, offset: Number });
+
 const lists = ref([]);
 const offset = props.offset ?? 40;
 const ch = ref(0);
