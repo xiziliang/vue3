@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { useSlots } from 'vue';
-import { onScopeDispose, onUnmounted, effectScope, getCurrentScope } from 'vue';
+import { useSlots, ref, watch, computed, toRef, reactive, inject } from 'vue';
+import { onScopeDispose, onUnmounted, effectScope, getCurrentScope, onMounted } from 'vue';
+import { injectKeyUser, UserInfo } from '../model/inject-key';
 
+const user = inject(injectKeyUser, {} as UserInfo);
+const data = reactive({ name: 'krystal', age: 28 });
 const slots = useSlots();
 const slot = slots.default?.();
 
@@ -13,11 +16,14 @@ onScopeDispose(() => {
 onUnmounted(() => {
   console.log('onUnmounted end');
 })
+
 </script>
 
 <template>
   <div>
-    <span>helloWorld</span>
+    <el-button @click="data.age++">自加1</el-button>
+    <span>{{ data.age }}</span>
+    <span>{{ user.name }}</span>
     <slot></slot>
   </div>
 </template>
