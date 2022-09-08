@@ -14,10 +14,10 @@ const user = reactive({
 
 const age = ref(12);
 
-const cmdProps = {
-  name: '我是cmd',
-  age: 12,
-};
+// const cmdProps = {
+//   name: '我是cmd',
+//   age: 12,
+// };
 
 // reactive 和 ref 的结合使用的一些问题
 // 1. 当reactive中使用ref的时候，ref的.value语法会被破坏，所有的取值不再需要加.value, 可以看例子1和2；
@@ -40,10 +40,10 @@ const cmdProps = {
 // };
 
 // 3
-// const cmdProps = reactive({
-//   name: '我是cmd',
-//   age: 12,
-// });
+const cmdProps = reactive({
+  name: '我是cmd',
+  age: 12,
+});
 
 provide(injectKeyUser, user);
 
@@ -95,16 +95,17 @@ const list = (num = 10) => new Array(num).fill(null).map((_, i) => ({ id: i + 1,
 
 <template>
   <el-button type="primary" size="default" @click="cmdProps.age++">cmd</el-button>
+  <el-button type="primary" size="default" @click="() => cmdProps.name = '我是xzl'">cmd - name</el-button>
   
-  <el-switch v-model="switchModel" type="primary" size="default" @change="onChange"></el-switch>
+  <!-- <el-switch v-model="switchModel" type="primary" size="default" @change="onChange"></el-switch>
   {{ state?.x }}
   <HelloWorld >
     <template #default="{ data }">
       <div>123 {{ data.name }}</div>
       <span>222 {{ data.age }}</span>
     </template>
-  </HelloWorld>
-  <Cmd v-bind="cmdProps" :age="age"></Cmd>
+  </HelloWorld> -->
+  <Cmd v-bind="cmdProps"></Cmd>
   <VirtualScroll :data="list(1000)" :height="800" :offset="150" #default="{ data }">  
     <div>
       <div>listData</div>

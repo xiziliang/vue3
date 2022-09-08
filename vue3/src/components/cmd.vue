@@ -1,13 +1,19 @@
 <script setup lang='ts'>
-import { shallowRef, watch, Ref } from 'vue';
+import { shallowRef, watch, Ref, onUpdated } from 'vue';
 
 const props = defineProps<{
     name: string;
     age: Ref<number> | number;
 }>();
-watch(() => props.age, (val) => {
-    console.log(val)
-})
+
+onUpdated(() => {
+    console.log(`updated ----- ${props.age}`);
+    console.log(`updated ----- ${props.name}`);
+});
+
+// watch(() => props.age, (val) => {
+//     console.log(val)
+// })
 
 console.log(props)
 
