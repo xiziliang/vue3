@@ -12,6 +12,7 @@ const state = ref(createState());
 // NOTE: onScopeDispose会收集setup和effectScope创建的scope，所以当两者销毁的时候都会执行
 // NOTE: onScopeDispose可以在setup和effectScope().run()中注册，在哪个中注册哪个副作用被销毁后就会执行哪个回调
 tryOnScopeDispose(onCloseSetUp);
+console.log(getCurrentScope())
 
 function useMouseScope() {
   const { x } = useMouse()

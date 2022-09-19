@@ -10,6 +10,12 @@ const props = defineProps<{
 
 const { name, id } = inject(injectKeyUser, {} as UserInfo);
 
+const color = ref('skyblue');
+
+const font = ref({
+  size: '20px',
+})
+
 </script>
 <template>
   <!-- NOTE: test inject -->
@@ -21,8 +27,16 @@ const { name, id } = inject(injectKeyUser, {} as UserInfo);
   <el-divider direction="horizontal"></el-divider>
   <!-- NOTE: test reactive.vue -->
   <div>
-    <span>{{ props.name }}</span>
+    <span class="name">{{ props.name }}</span>
     ---------
-    <span>{{ props.age }}</span>
+    <span class="age">{{ props.age }}</span>
   </div>
 </template>
+<style>
+.name {
+  color: v-bind(color);
+}
+.age {
+  font-size: v-bind('font.size');
+}
+</style>
