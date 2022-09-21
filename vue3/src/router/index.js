@@ -16,6 +16,14 @@ const routes = [
   // }
 ]
 
+// NOTE:
+// 将
+// history.pushState(myState, '', url)
+// 替换成
+// await router.push(url)
+// history.replaceState({ ...history.state, ...myState }, '')
+// 同样，如果你在调用 history.replaceState() 时没有保留当前状态，你需要传递当前 history.state：
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL), //process?.env.BASE_URL 为啥process没有
   routes
