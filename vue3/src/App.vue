@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, reactive, effectScope, computed, getCurrentScope, inject, InjectionKey, provide, onScopeDispose, useSlots } from 'vue';
-import { useMouse, createGlobalState, tryOnScopeDispose } from '@vueuse/core';
+import { ref, reactive, provide } from 'vue';
 
-import { injectKeyUser } from './model/inject-key';
+import { injectKeyUser } from '@/model';
 
 // TODO:
 // NOTE:

@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { ref, inject } from 'vue';
 import type { Ref } from 'vue';
-import { injectKeyUser, UserInfo } from '../model/inject-key';
+import { injectKeyUser, UserInfo } from '@/model';
 
 const props = defineProps<{
   name: string;
